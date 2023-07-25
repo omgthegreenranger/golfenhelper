@@ -55,12 +55,12 @@
             "holes": [
                 {   "number": "1",
                     "distance": "110",
-                    "par": "3"
+                    "par": "5"
                 },
                 {
                     "number": "2",
                     "distance": "108",
-                    "par": "3"
+                    "par": "2"
                 },
                 {
                     "number": "3",
