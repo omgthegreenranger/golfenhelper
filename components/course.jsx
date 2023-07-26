@@ -10,7 +10,8 @@ console.log(navigation, route)
             {courses.courses.map((course, i) => {
             console.log(i)
                 return(
-                    <Pressable 
+                    <Pressable
+                        key={i} 
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => {navigation.navigate('Scoreboard', {title: course.name, courseId: i})}}>
                         <Text>{course.name}</Text>
