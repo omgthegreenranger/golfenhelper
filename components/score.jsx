@@ -4,6 +4,7 @@ import courses from "../course.json";
 export default function Score(props) {
   const { navigation, route } =
     props;
+    console.log(props);
   let hole = route.params.hole
   return (
     <View>
