@@ -7,18 +7,8 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, Dimensions,
 import {NavigationContainer, Linking, Platform} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Login from './components/score.jsx';
+import Login from './components/login.jsx';
 
-const _storeData = async () => {
-  try {
-    await AsyncStorage.setItem(
-      '@MySuperStore:key',
-      'I like to save it.',
-    );
-  } catch (error) {
-    // Error saving data
-  }
-};
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1';
 const Stack = createNativeStackNavigator();
