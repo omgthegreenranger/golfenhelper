@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -11,22 +11,49 @@ import courses from "../course.json";
 
 export default function Scoreboard(props) {
   const { navigation, route } = props;
-  const { title } = route.params;
-
-  // const {height, width} = useScreenDimensions()
+  const { title, courseId } = route.params;
   const [course, setCourse] = useState(courses.courses[route.params.courseId]);
-  // const [holeScore, setHoleScore] = useState(
-  let holeScore = course.holes.map((score) => ({
-    hole: score.number,
-    distance: score.distance,
-    par: score.par,
-    score: 0,
-  }));
-  console.log(course);
-  console.log(holeScore);
+  const [holeScore, setHoleScore] = useState([]);
+  const [scoreReturn, setScoreReturn] = useState(route.params.scoreReturn);
 
-  function changeScreen(hole) {
-    navigation.navigate("Score", { hole: hole });
+  console.log(route.params);
+
+
+function newScores() {course.holes.map((hole, index) => {
+    // console.log("No score return, no hole", hole);
+    if (index === hole.hole - 1) {
+      // console.log("Yes.", index, hole.hole - 1)
+      return {
+        ...hole,
+        hole: hole.hole,
+        distance: hole.distance,
+        par: hole.par,
+        score: 0,
+      };
+    }
+    // console.log("No")
+    return;
+  })};
+
+  setHoleScore(() => {
+    if (!route.params.scoreReturn) {
+    console.log("There is no scoreReturn");
+      newScores();
+    } else {
+    console.log("There is a scoreReturn", route.params.scoreReturn);
+    return(route.params.scoreReturn);
+    }
+  })
+
+console.log(holeScore)
+
+  function changeScreen(hole, index) {
+    console.log(index);
+    navigation.navigate("Score", {
+      hole: hole.hole,
+      holeScore: newScores,
+      key: index,
+    });
   }
 
   // let totalScore = course.reduce((course.))
@@ -37,27 +64,21 @@ export default function Scoreboard(props) {
     <View
       style={[
         styles.container,
-        { height: useWindowDimensions(window).height },
-        { width: useWindowDimensions().width },
+        // { height: useWindowDimensions(screen).height },
+        // { width: useWindowDimensions().width },
       ]}
     >
       <View style={styles.scorecardbox}>
         <View
-          style={[styles.scorecard, { width: useWindowDimensions().width }]}
+          style={[styles.scorecard, 
+            // { width: useWindowDimensions().width }
+          ]}
         >
-          {courseOut.map((deet) => (
+          {courseOut.map((deet, i) => (
             <TouchableOpacity
-              key={deet.hole}
-              style={[
-                styles.scorebox,
-                {
-                  borderLeft: "black 1px solid",
-                  borderRight: "black 1px solid",
-                  borderTop: "black 1px solid",
-                  borderBottom: "black 1px solid",
-                },
-              ]}
-              onPress={() => changeScreen(deet)}
+              key={i}
+              style={[styles.scorebox]}
+              onPress={() => changeScreen(deet, i)}
             >
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
@@ -66,21 +87,15 @@ export default function Scoreboard(props) {
           ))}
         </View>
         <View
-          style={[styles.scorecard, { width: useWindowDimensions().width }]}
+          style={[styles.scorecard,
+            //  { width: useWindowDimensions().width }
+            ]}
         >
-          {courseIn.map((deet) => (
+          {courseIn.map((deet, i) => (
             <TouchableOpacity
-              key={deet.hole}
-              style={[
-                styles.scorebox,
-                {
-                  borderLeft: "black 1px solid",
-                  borderRight: "black 1px solid",
-                  borderTop: "black 1px solid",
-                  borderBottom: "black 1px solid",
-                },
-              ]}
-              onPress={() => changeScreen(deet)}
+              key={i + 9}
+              style={[styles.scorebox]}
+              onPress={() => changeScreen(deet, i + 9)}
             >
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
@@ -105,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   scorecardbox: {
-    height: 800,
+    // height: 800,
   },
   courseName: {
     padding: 10,
@@ -128,6 +143,7 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: "stretch",
     textAlign: "center",
+    border: "black 1px solid",
   },
   holeFont: {
     backgroundColor: "#FFC300",
@@ -138,8 +154,8 @@ const styles = StyleSheet.create({
   parFont: {
     padding: "3px",
     borderBottom: "black 1px dotted",
-    fontSize: "19px"
+    fontSize: "19px",
+    // border: "black 1px solid"
   },
-  scoreFont: { padding: "3px",
-    fontSize: "22px" },
+  scoreFont: { padding: "3px", fontSize: "22px" },
 });
