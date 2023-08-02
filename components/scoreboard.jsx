@@ -11,37 +11,21 @@ import courses from "../course.json";
 
 export default function Scoreboard(props) {
   const { navigation, route } = props;
-  const { title, courseId } = route.params;
-  const [course, setCourse] = useState(courses.courses[route.params.courseId]);
+  const { scoreCard } = route.params;
+  const [course, setCourse] = useState(scoreCard.holes);
   const [holeScore, setHoleScore] = useState([]);
   const [scoreReturn, setScoreReturn] = useState(route.params.scoreReturn);
+  console.log(scoreCard)
+  console.log(course);
 
-  console.log(route.params);
 
-
-function newScores() {course.holes.map((hole, index) => {
-    // console.log("No score return, no hole", hole);
-    if (index === hole.hole - 1) {
-      // console.log("Yes.", index, hole.hole - 1)
-      return {
-        ...hole,
-        hole: hole.hole,
-        distance: hole.distance,
-        par: hole.par,
-        score: 0,
-      };
-    }
-    // console.log("No")
-    return;
-  })};
-
-  setHoleScore(() => {
+useEffect(() => {
     if (!route.params.scoreReturn) {
     console.log("There is no scoreReturn");
-      newScores();
+    setHoleScore(course);
     } else {
     console.log("There is a scoreReturn", route.params.scoreReturn);
-    return(route.params.scoreReturn);
+    setHoleScore(route.params.scoreReturn);
     }
   })
 
