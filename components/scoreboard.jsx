@@ -27,9 +27,6 @@ useEffect(() => {
     setHoleScore(route.params.scoreReturn);
     }
   })
-
-console.log(holeScore)
-
   function changeScreen(hole, index, playerName) {
     console.log(index);
     navigation.navigate("Score", {
@@ -90,14 +87,13 @@ console.log(holeScore)
             >
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-              {deet.playerScore.map(player => {
-                console.log(player)
+              {deet.playerScore.map(golfer => {
                 return(
                   <TouchableOpacity
                   // key={i + 9 + player.name}
-                  onPress={() => changeScreen(deet, i + 9, player.name)}
+                  onPress={() => changeScreen(deet, i + 9, golfer.player)}
                 >
-                <Text style={styles.scoreFont}>{player.score}</Text>
+                <Text style={styles.scoreFont}>{golfer.score}</Text>
                 </TouchableOpacity>)
               })}
             </View>

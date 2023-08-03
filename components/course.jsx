@@ -19,16 +19,14 @@ export default function CourseSelect(props) {
 
   function cardMakeAndSend(courseId, players) {
     let course = courses.courses[courseId];
-    console.log(course);
     let playerCount = [...players];
     const playerScore = playerCount.map(player => {
       let score = 0
-      return ({
+      return {
         ...playerScore,
         player,
-        score})
+        score}
   });
-    console.log(playerScore)
     const scoresList = course.holes.map((hole) => {
       return ({
         ...hole,
@@ -42,9 +40,6 @@ export default function CourseSelect(props) {
       name: course.name,
       holes: scoresList,
   });
-
-  console.log(scoreCard)
-
     navigation.navigate("Scoreboard", {
       scoreCard: scoreCard,
     });
