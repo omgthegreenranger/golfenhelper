@@ -11,13 +11,12 @@ import courses from "../course.json";
 
 export default function Scoreboard(props) {
   const { navigation, route } = props;
-  const { scoreCard } = route.params;
+  const [scoreCard, setScoreCard ] = useState(route.params.scoreCard);
   const [course, setCourse] = useState(scoreCard.holes);
   const [holeScore, setHoleScore] = useState([]);
   const [scoreReturn, setScoreReturn] = useState(route.params.scoreReturn);
-  console.log(scoreCard)
-  console.log(course);
 
+console.log(scoreCard)
 
 useEffect(() => {
     if (!route.params.scoreReturn) {
@@ -31,18 +30,22 @@ useEffect(() => {
 
 console.log(holeScore)
 
-  function changeScreen(hole, index) {
+  function changeScreen(hole, index, playerName) {
     console.log(index);
     navigation.navigate("Score", {
       hole: hole.hole,
-      holeScore: newScores,
+      holeScore,
       key: index,
+      player: playerName
     });
   }
 
   // let totalScore = course.reduce((course.))
   let courseOut = holeScore.slice(0, 9);
   let courseIn = holeScore.slice(9, 18);
+
+  console.log(courseOut)
+  console.log(courseIn)
 
   return (
     <View
@@ -59,32 +62,45 @@ console.log(holeScore)
           ]}
         >
           {courseOut.map((deet, i) => (
-            <TouchableOpacity
-              key={i}
-              style={[styles.scorebox]}
-              onPress={() => changeScreen(deet, i)}
-            >
+            <View style={styles.scorebox}>
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-              <Text style={styles.scoreFont}>{deet.score}</Text>
-            </TouchableOpacity>
+
+              {deet.playerScore.map(golfer => {
+
+                return(
+                  <TouchableOpacity
+                  // key={i}
+                  onPress={() => changeScreen(deet, i, golfer.player)}
+                >
+                <Text style={styles.scoreFont}>{golfer.score}</Text>
+                </TouchableOpacity>)
+              })}
+               </View>
           ))}
-        </View>
+          </View>
         <View
           style={[styles.scorecard,
             //  { width: useWindowDimensions().width }
             ]}
         >
           {courseIn.map((deet, i) => (
-            <TouchableOpacity
-              key={i + 9}
+            <View
               style={[styles.scorebox]}
-              onPress={() => changeScreen(deet, i + 9)}
             >
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-              <Text style={styles.scoreFont}>{deet.score}</Text>
-            </TouchableOpacity>
+              {deet.playerScore.map(player => {
+                console.log(player)
+                return(
+                  <TouchableOpacity
+                  // key={i + 9 + player.name}
+                  onPress={() => changeScreen(deet, i + 9, player.name)}
+                >
+                <Text style={styles.scoreFont}>{player.score}</Text>
+                </TouchableOpacity>)
+              })}
+            </View>
           ))}
         </View>
       </View>

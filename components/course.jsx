@@ -19,25 +19,32 @@ export default function CourseSelect(props) {
 
   function cardMakeAndSend(courseId, players) {
     let course = courses.courses[courseId];
-    console.log(courses);
     console.log(course);
     let playerCount = [...players];
-    console.log(playerCount);
-    const playerScore = players.map((player) => [...playerScore, {name: player, score: '0' }]
-    );
+    const playerScore = playerCount.map(player => {
+      let score = 0
+      return ({
+        ...playerScore,
+        player,
+        score})
+  });
+    console.log(playerScore)
     const scoresList = course.holes.map((hole) => {
-      return {
+      return ({
         ...hole,
         hole: hole.hole,
         distance: hole.distance,
         par: hole.par,
-        score: playerScore,
-      };
+        playerScore
+      })
     });
-    const scoreCard = {
+    const scoreCard = ({
       name: course.name,
       holes: scoresList,
-  };
+  });
+
+  console.log(scoreCard)
+
     navigation.navigate("Scoreboard", {
       scoreCard: scoreCard,
     });
@@ -51,7 +58,7 @@ export default function CourseSelect(props) {
             key={i}
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
-              cardMakeAndSend(i, ["Steve"]);
+              cardMakeAndSend(i, ["Steve", "Bill"]);
             }}
           >
             <Text>{course.name}</Text>
