@@ -6,11 +6,20 @@ import React, {useState} from 'react';
 export default function Score(props) {
   const { navigation, route } = props;
   const [hole, setHole ] = useState(route.params.key);
-  const [holeScore, setHoleScore ] = useState(route.params.holeScore);
+  const [holeScore, setHoleScore ] = useState(route.params.holeScore[hole]);
   const [tempScore, setTempScore ] = useState([]);
 
-console.log(holeScore)
-
+  const player = holeScore.playerScore.filter(golfer =>
+    {
+      if(golfer.player === route.params.player) {
+        console.log("This worked!")
+        return(golfer)
+      } else {
+        console.log("We'll do something about this soon")
+      }
+      return
+    }
+    )
   function updateScores() {
 
     const newScore = holeScore.map(score => {
@@ -28,10 +37,10 @@ console.log(holeScore)
   return (
     <View>
       <Text>
-        Hole #{holeScore[hole].hole}, Distance to Tee: {holeScore[hole].distance}, Par: {holeScore[hole].par}
+        Hole #{holeScore.hole}, Distance to Tee: {holeScore.distance}, Par: {holeScore.par}
       </Text>
       <View style={styles.holeScore}>
-        <TextInput style={styles.holeBox} onChangeText={scoreNum => setTempScore({hole: holeScore[hole].hole, distance: holeScore[hole].distance, par: holeScore[hole].par, score: scoreNum})} defaultValue={holeScore[hole].score} clearTextOnFocus="true"></TextInput>
+        <TextInput style={styles.holeBox} onChangeText={scoreNum => setTempScore({hole: holeScore.hole, distance: holeScore.distance, par: holeScore.par, score: scoreNum})} defaultValue={holeScore.score} clearTextOnFocus="true"></TextInput>
       </View>
       <Pressable
         style={[styles.button, styles.buttonClose]}
