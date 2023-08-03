@@ -1,26 +1,29 @@
-import React, {useState} from 'react';
-import { StatusBar } from 'expo-status-bar';
-import Score from './components/score.jsx';
-import Scoreboard from './components/scoreboard.jsx';
-import CourseSelect from './components/course.jsx';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, Dimensions, useWindowDimensions, useScreenDimensions } from 'react-native';
-import {NavigationContainer, Linking, Platform} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Login from './components/score.jsx';
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import Score from "./components/score.jsx";
+import Scoreboard from "./components/scoreboard.jsx";
+import CourseSelect from "./components/course.jsx";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  Dimensions,
+  useWindowDimensions,
+  useScreenDimensions,
+} from "react-native";
+import {
+  NavigationContainer,
+  Linking,
+  Platform,
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Login from "./components/login.jsx";
 
-const _storeData = async () => {
-  try {
-    await AsyncStorage.setItem(
-      '@MySuperStore:key',
-      'I like to save it.',
-    );
-  } catch (error) {
-    // Error saving data
-  }
-};
-
-const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1';
+const PERSISTENCE_KEY = "NAVIGATION_STATE_V1";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -55,7 +58,6 @@ export default function App() {
   //   return null;
   // }
 
-
   return (
     <NavigationContainer
     // initialState={initialState}
@@ -64,13 +66,13 @@ export default function App() {
     // }
     >
       <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen
+        <Stack.Screen
           name="Login"
           component={Login}
           // options={{title: route.params.title}}
           // screenOptions={{title: route.params.title}}
         />
-      <Stack.Screen
+        <Stack.Screen
           name="Course"
           component={CourseSelect}
           // options={{title: route.params.title}}
@@ -84,20 +86,17 @@ export default function App() {
         <Stack.Screen
           name="Score"
           component={Score}
-          options={({ route }) => ({scoreHole: route.params.scoreHole})}
+          options={({ route }) => ({ scoreHole: route.params.scoreHole })}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
-
 }
 
-const styles = StyleSheet.create(
-  {
-  
+const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

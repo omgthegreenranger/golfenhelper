@@ -4,91 +4,91 @@
             {
                 "name": "Dentonia Golf Course",
                 "holes": [
-                    {   "number": "1",
+                    {   "hole": "1",
                         "distance": "102",
                         "par": "3"
                     },
                     {
-                        "number": "2",
+                        "hole": "2",
                         "distance": "104",
                         "par": "3"
                     },
                     {
-                        "number": "3",
+                        "hole": "3",
                         "distance": "103",
                         "par": "3"
                     },
                     {
-                        "number": "4",
+                        "hole": "4",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "5",
+                        "hole": "5",
                         "distance": "111",
                         "par": "3"
                     },
                     {
-                        "number": "6",
+                        "hole": "6",
                         "distance": "169",
                         "par": "3"
                     },
                     {
-                        "number": "7",
+                        "hole": "7",
                         "distance": "100",
                         "par": "3"
                     },
                     {
-                        "number": "8",
+                        "hole": "8",
                         "distance": "97",
                         "par": "3"
                     },
                     {
-                        "number": "9",
+                        "hole": "9",
                         "distance": "129",
                         "par": "3"
                     },
-                    {   "number": "10",
+                    {   "hole": "10",
                         "distance": "104",
                         "par": "3"
                     },
                     {
-                        "number": "11",
+                        "hole": "11",
                         "distance": "185",
                         "par": "3"
                     },
                     {
-                        "number": "12",
+                        "hole": "12",
                         "distance": "93",
                         "par": "3"
                     },
                     {
-                        "number": "13",
+                        "hole": "13",
                         "distance": "140",
                         "par": "3"
                     },
                     {
-                        "number": "14",
+                        "hole": "14",
                         "distance": "105",
                         "par": "3"
                     },
                     {
-                        "number": "15",
+                        "hole": "15",
                         "distance": "96",
                         "par": "3"
                     },
                     {
-                        "number": "16",
+                        "hole": "16",
                         "distance": "129",
                         "par": "3"
                     },
                     {
-                        "number": "17",
+                        "hole": "17",
                         "distance": "112",
                         "par": "3"
                     },
                     {
-                        "number": "18",
+                        "hole": "18",
                         "distance": "106",
                         "par": "3"
                     }
@@ -97,92 +97,92 @@
             {
                 "name": "Don Valley Golf Course",
                 "holes": [
-                    {   "number": "1",
+                    {   "hole": "1",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "2",
+                        "hole": "2",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "3",
+                        "hole": "3",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "4",
+                        "hole": "4",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "5",
+                        "hole": "5",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "6",
+                        "hole": "6",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "7",
+                        "hole": "7",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "8",
+                        "hole": "8",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "9",
+                        "hole": "9",
                         "distance": "110",
                         "par": "4"
                     },
                     {   
-                        "number": "10",
+                        "hole": "10",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "11",
+                        "hole": "11",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "12",
+                        "hole": "12",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "13",
+                        "hole": "13",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "14",
+                        "hole": "14",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "15",
+                        "hole": "15",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "16",
+                        "hole": "16",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "17",
+                        "hole": "17",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "18",
+                        "hole": "18",
                         "distance": "110",
                         "par": "4"
                     }
@@ -191,92 +191,92 @@
             {
                 "name": "Humber Valley Golf Course",
                 "holes": [
-                    {   "number": "1",
+                    {   "hole": "1",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "2",
+                        "hole": "2",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "3",
+                        "hole": "3",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "4",
+                        "hole": "4",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "5",
+                        "hole": "5",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "6",
+                        "hole": "6",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "7",
+                        "hole": "7",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "8",
+                        "hole": "8",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "9",
+                        "hole": "9",
                         "distance": "110",
                         "par": "4"
                     },
                     {   
-                        "number": "10",
+                        "hole": "10",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "11",
+                        "hole": "11",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "12",
+                        "hole": "12",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "13",
+                        "hole": "13",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "14",
+                        "hole": "14",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "15",
+                        "hole": "15",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "16",
+                        "hole": "16",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "17",
+                        "hole": "17",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "18",
+                        "hole": "18",
                         "distance": "110",
                         "par": "3"
                     }
@@ -285,92 +285,92 @@
             {
                 "name": "Scarlett Woods Golf Course",
                 "holes": [
-                    {   "number": "1",
+                    {   "hole": "1",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "2",
+                        "hole": "2",
                         "distance": "108",
                         "par": "3"
                     },
                     {
-                        "number": "3",
+                        "hole": "3",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "4",
+                        "hole": "4",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "5",
+                        "hole": "5",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "6",
+                        "hole": "6",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "7",
+                        "hole": "7",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "8",
+                        "hole": "8",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "9",
+                        "hole": "9",
                         "distance": "110",
                         "par": "3"
                     },
                     {   
-                        "number": "10",
+                        "hole": "10",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "11",
+                        "hole": "11",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "12",
+                        "hole": "12",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "13",
+                        "hole": "13",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "14",
+                        "hole": "14",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "15",
+                        "hole": "15",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "16",
+                        "hole": "16",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "17",
+                        "hole": "17",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "18",
+                        "hole": "18",
                         "distance": "110",
                         "par": "4"
                     }
@@ -379,92 +379,92 @@
             {
                 "name": "Tam O'Shanter Golf Course",
                 "holes": [
-                    {   "number": "1",
+                    {   "hole": "1",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "2",
+                        "hole": "2",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "3",
+                        "hole": "3",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "4",
+                        "hole": "4",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "5",
+                        "hole": "5",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "6",
+                        "hole": "6",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "7",
+                        "hole": "7",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "8",
+                        "hole": "8",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "9",
+                        "hole": "9",
                         "distance": "110",
                         "par": "4"
                     },
                     {   
-                        "number": "10",
+                        "hole": "10",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "11",
+                        "hole": "11",
                         "distance": "108",
                         "par": "4"
                     },
                     {
-                        "number": "12",
+                        "hole": "12",
                         "distance": "110",
                         "par": "5"
                     },
                     {
-                        "number": "13",
+                        "hole": "13",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "14",
+                        "hole": "14",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "15",
+                        "hole": "15",
                         "distance": "110",
                         "par": "3"
                     },
                     {
-                        "number": "16",
+                        "hole": "16",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "17",
+                        "hole": "17",
                         "distance": "110",
                         "par": "4"
                     },
                     {
-                        "number": "18",
+                        "hole": "18",
                         "distance": "110",
                         "par": "4"
                     }
@@ -473,92 +473,92 @@
             {
                 "name": "Cedar Brae Golf Course",
                 "holes": [
-                    {   "number": "1",
+                    {   "hole": "1",
                         "distance": "437",
                         "par": "4"
                     },
                     {
-                        "number": "2",
+                        "hole": "2",
                         "distance": "163",
                         "par": "3"
                     },
                     {
-                        "number": "3",
+                        "hole": "3",
                         "distance": "390",
                         "par": "4"
                     },
                     {
-                        "number": "4",
+                        "hole": "4",
                         "distance": "155",
                         "par": "3"
                     },
                     {
-                        "number": "5",
+                        "hole": "5",
                         "distance": "510",
                         "par": "5"
                     },
                     {
-                        "number": "6",
+                        "hole": "6",
                         "distance": "181",
                         "par": "3"
                     },
                     {
-                        "number": "7",
+                        "hole": "7",
                         "distance": "500",
                         "par": "5"
                     },
                     {
-                        "number": "8",
+                        "hole": "8",
                         "distance": "370",
                         "par": "4"
                     },
                     {
-                        "number": "9",
+                        "hole": "9",
                         "distance": "266",
                         "par": "4"
                     },
                     {   
-                        "number": "10",
+                        "hole": "10",
                         "distance": "330",
                         "par": "4"
                     },
                     {
-                        "number": "11",
+                        "hole": "11",
                         "distance": "177",
                         "par": "3"
                     },
                     {
-                        "number": "12",
+                        "hole": "12",
                         "distance": "348",
                         "par": "4"
                     },
                     {
-                        "number": "13",
+                        "hole": "13",
                         "distance": "465",
                         "par": "5"
                     },
                     {
-                        "number": "14",
+                        "hole": "14",
                         "distance": "409",
                         "par": "4"
                     },
                     {
-                        "number": "15",
+                        "hole": "15",
                         "distance": "306",
                         "par": "4"
                     },
                     {
-                        "number": "16",
+                        "hole": "16",
                         "distance": "161",
                         "par": "3"
                     },
                     {
-                        "number": "17",
+                        "hole": "17",
                         "distance": "549",
                         "par": "5"
                     },
                     {
-                        "number": "18",
+                        "hole": "18",
                         "distance": "373",
                         "par": "4"
                     }
