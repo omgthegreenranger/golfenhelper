@@ -13,11 +13,12 @@ import {
 import courses from "../course.json";
 
 export default function CourseSelect(props) {
-  const { navigation, route } = props;
-
+  const { navigation, route} = props;
+  const players = route.params.players;
+  console.log(players)
   // on select, let's make the card.
 
-  function cardMakeAndSend(courseId, players) {
+  function cardMakeAndSend(courseId) {
     let course = courses.courses[courseId];
     let playerCount = [...players];
     const playerScore = playerCount.map(player => {
@@ -53,7 +54,7 @@ export default function CourseSelect(props) {
             key={i}
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
-              cardMakeAndSend(i, ["Steve", "Bill"]);
+              cardMakeAndSend(i);
             }}
           >
             <Text>{course.name}</Text>
