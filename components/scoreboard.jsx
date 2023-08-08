@@ -11,29 +11,29 @@ import courses from "../course.json";
 
 export default function Scoreboard(props) {
   const { navigation, route } = props;
-  const [scoreCard, setScoreCard ] = useState(route.params.scoreCard);
+  const [scoreCard, setScoreCard] = useState(route.params.scoreCard);
   const [course, setCourse] = useState(scoreCard.holes);
   const [holeScore, setHoleScore] = useState([]);
   const [scoreReturn, setScoreReturn] = useState(route.params.scoreReturn);
 
-console.log(scoreCard)
+  console.log(scoreCard);
 
-useEffect(() => {
+  useEffect(() => {
     if (!route.params.scoreReturn) {
-    console.log("There is no scoreReturn");
-    setHoleScore(course);
+      console.log("There is no scoreReturn");
+      setHoleScore(course);
     } else {
-    console.log("There is a scoreReturn", route.params.scoreReturn);
-    setHoleScore(route.params.scoreReturn);
+      console.log("There is a scoreReturn", route.params.scoreReturn);
+      setHoleScore(route.params.scoreReturn);
     }
-  })
+  });
   function changeScreen(hole, index, playerName) {
     console.log(index);
     navigation.navigate("Score", {
       hole: hole.hole,
       holeScore,
       key: index,
-      player: playerName
+      player: playerName,
     });
   }
 
@@ -41,8 +41,8 @@ useEffect(() => {
   let courseOut = holeScore.slice(0, 9);
   let courseIn = holeScore.slice(9, 18);
 
-  console.log(courseOut)
-  console.log(courseIn)
+  console.log(courseOut);
+  console.log(courseIn);
 
   return (
     <View
@@ -54,47 +54,55 @@ useEffect(() => {
     >
       <View style={styles.scorecardbox}>
         <View
-          style={[styles.scorecard, 
+          style={[
+            styles.scorecard,
             // { width: useWindowDimensions().width }
           ]}
         >
+          <View>
+            {courseOut.playerScore.map((golfer) => {
+              return(
+                <Text style={styles.nameFont}>{golfer.player.charAt(0)}</Text>)
+               })}
+          </View>
           {courseOut.map((deet, i) => (
-            <View style={styles.scorebox}>
+          <View style={styles.scorebox}>
+
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-
-              {deet.playerScore.map(golfer => {
-
-                return(
+              {deet.playerScore.map((golfer) => {
+                return (
                   <TouchableOpacity
-                  // key={i}
-                  onPress={() => changeScreen(deet, i, golfer.player)}
-                >
-                <Text style={styles.scoreFont}>{golfer.score}</Text>
-                </TouchableOpacity>)
+                    // key={i}
+                    onPress={() => changeScreen(deet, i, golfer.player)}
+                  >
+                    <Text style={styles.scoreFont}>{golfer.score}</Text>
+                  </TouchableOpacity>
+                );
               })}
-               </View>
-          ))}
           </View>
+          ))}
+        </View>
+
         <View
-          style={[styles.scorecard,
+          style={[
+            styles.scorecard,
             //  { width: useWindowDimensions().width }
-            ]}
+          ]}
         >
           {courseIn.map((deet, i) => (
-            <View
-              style={[styles.scorebox]}
-            >
+            <View style={[styles.scorebox]}>
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-              {deet.playerScore.map(golfer => {
-                return(
+              {deet.playerScore.map((golfer) => {
+                return (
                   <TouchableOpacity
-                  // key={i + 9 + player.name}
-                  onPress={() => changeScreen(deet, i + 9, golfer.player)}
-                >
-                <Text style={styles.scoreFont}>{golfer.score}</Text>
-                </TouchableOpacity>)
+                    // key={i + 9 + player.name}
+                    onPress={() => changeScreen(deet, i + 9, golfer.player)}
+                  >
+                    <Text style={styles.scoreFont}>{golfer.score}</Text>
+                  </TouchableOpacity>
+                );
               })}
             </View>
           ))}

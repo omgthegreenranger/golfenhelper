@@ -13,34 +13,39 @@ import {
 import courses from "../course.json";
 
 export default function CourseSelect(props) {
-  const { navigation, route} = props;
+  const { navigation, route } = props;
   const players = route.params.players;
-  console.log(players)
+  console.log(players);
   // on select, let's make the card.
+
+  // Order - Course details -> Hole details (Par, distance, number) -> Player -> Scorecard
 
   function cardMakeAndSend(courseId) {
     let course = courses.courses[courseId];
-    let playerCount = [...players];
-    const playerScore = playerCount.map(player => {
-      let score = 0
+    let holeCount = course.holes.length;
+
+    let holeScore = Array.from({ length: holeCount }, (_, index) => "0");
+
+    const playerScore = players.map((player) => {
       return {
-        ...playerScore,
-        player,
-        score}
-  });
-    const scoresList = course.holes.map((hole) => {
-      return ({
+        player: player,
+        scores: holeScore,
+      };
+    });
+
+    const holeInfo = course.holes.map((hole) => {
+      return {
         ...hole,
         hole: hole.hole,
         distance: hole.distance,
         par: hole.par,
-        playerScore
-      })
+      };
     });
-    const scoreCard = ({
+    const scoreCard = {
       name: course.name,
-      holes: scoresList,
-  });
+      holes: holeInfo,
+      players: playerScore,
+    };
     navigation.navigate("Scoreboard", {
       scoreCard: scoreCard,
     });

@@ -94,6 +94,7 @@ export default function Score(props) {
       <View style={styles.holeScore}>
         <TextInput
           style={styles.holeBox}
+          keyboardType="number-pad"
           onChangeText={(scoreNum) =>
             // setTempScore({player: player[0].player, score: scoreNum })
             setTempScore({ player: player[0].player, score: scoreNum })
