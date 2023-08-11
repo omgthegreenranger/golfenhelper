@@ -10,23 +10,12 @@ import {
 
 export default function Scoreboard(props) {
   const { navigation, route } = props;
-  // const [scoreCard, setScoreCard] = useState(route.params.scoreCard);
-  // const [course, setCourse] = useState(scoreCard.course);
-  // const [holes, setHoles] = useState(scoreCard.holes);
-  // const [players, setPlayers] = useState(scoreCard.players);
-
   const [course, setCourse] = useState(route.params.course);
   const [holes, setHoles] = useState(route.params.holes);
-  // const [players, setPlayers] = useState({});
-
-const players = route.params.players;
-
-  console.log(route.params.players);
-console.log(players)
+  const players = route.params.players;
 
   //This is the function to move to the score screen.
   function changeScreen(hole, index, player) {
-    console.log(player);
     navigation.navigate("Score", {
       hole: hole,
       key: index,

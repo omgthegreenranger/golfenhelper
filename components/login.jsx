@@ -179,10 +179,6 @@ function PlayerNames(props) {
 
 function GameReview(props) {
   const { pickedHole, playerCount, players, navigation } = props;
-  console.log(pickedHole);
-  console.log(playerCount);
-  console.log(players);
-
   let course = courses.courses[pickedHole];
   let holeCount = course.holes.length;
 
@@ -208,7 +204,6 @@ function GameReview(props) {
     holes: holeInfo,
     players: playerInfo,
   };
-  console.log(scoreCard.players)
   return (
     <View>
       <View>
@@ -217,7 +212,6 @@ function GameReview(props) {
       </View>
       <View>
         {scoreCard.players.map((golfer, i) => {
-          console.log(golfer)
           return(
         <Text>{golfer.player}</Text>
        ) })}

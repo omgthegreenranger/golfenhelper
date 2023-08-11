@@ -16,11 +16,6 @@ export default function Score(props) {
   const [players, setPlayers] = useState(route.params.players)
   const [tempScore, setTempScore] = useState();
 
-  console.log(hole);
-  console.log(key);
-  console.log(player);
-  console.log(players);
-
   function updateScores() {
     const playerScore = player.scores.map((score, i) => {
       if (i === key) {
@@ -47,8 +42,6 @@ export default function Score(props) {
       players: playerList,
       });
   }
-
-  console.log(player);
   return (
     <View>
       <Text>

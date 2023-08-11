@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6d6391a4-0697-4f96-b539-3d6960a2ec84"
+      }
+    },
+    "owner": "gogreenranger"
   }
 }
