@@ -6,106 +6,67 @@ import {
   Pressable,
   useWindowDimensions,
 } from "react-native";
-import courses from "../course.json";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Score(props) {
   const { navigation, route } = props;
-  const [hole, setHole] = useState(route.params.key);
-  const [holeInfo, setHoleInfo] = useState(route.params.holeScore);
-  const [holeScore, setHoleScore] = useState(holeInfo[hole]);
-  const [tempScore, setTempScore] = useState([]);
-  const playerName = route.params.player;
+  const [key, setKey] = useState(route.params.key);
+  const [hole, setHole] = useState(route.params.hole);
+  const [player, setPlayer] = useState(route.params.player);
+  const [players, setPlayers] = useState(route.params.players)
+  const [tempScore, setTempScore] = useState();
 
-  console.log(playerName, route.params.player);
-
-  const player = holeScore.playerScore.filter((golfer, i) => {
-    if (golfer.player === route.params.player) {
-      console.log("This worked!");
-      return golfer;
-    } else {
-      console.log("We'll do something about this soon");
-    }
-    return;
-  });
-
+  console.log(hole);
+  console.log(key);
   console.log(player);
+  console.log(players);
+
   function updateScores() {
-    console.log(tempScore);
-    // We're going to have to reassemble the entire thing again. Let's get our whole thing together.
-    // let's update and reassemble the player scores
-
-    const playerScore = holeScore.playerScore.map((player) => {
-      console.log(player);
-      console.log(tempScore);
-      if (player.player === tempScore.player) {
-        console.log(tempScore);
-        return {
-          ...playerScore,
-          player: tempScore.player,
-          score: tempScore.score,
-        };
-      } else {
-        return {
-          ...playerScore,
+    const playerScore = player.scores.map((score, i) => {
+      if (i === key) {
+        return(tempScore)
+      }
+        
+      return(score)
+    })
+    const playerList = players.map((playName) => {
+      if(playName.player == player.player) {
+        return({
           player: player.player,
-          score: player.score,
-        };
-      }
-    });
-
-    const holeUpdate = { ...holeScore, playerScore: playerScore };
-
-    console.log(tempScore);
-    console.log(playerScore);
-    console.log(holeInfo);
-
-    const holeList = holeInfo.map((hole) => {
-      let holeDeets;
-      console.log(hole);
-      console.log(holeUpdate);
-      if (hole.hole == holeUpdate.hole) {
-        holeDeets = holeUpdate;
-        console.log("yes", holeUpdate);
+          scores: playerScore}
+        )
       } else {
-        holeDeets = hole;
-        console.log("no", holeDeets);
+        return({
+          player: playName.player,
+          scores: playName.scores}
+        )
       }
-      return {
-        hole: holeDeets.hole,
-        distance: holeDeets.distance,
-        par: holeDeets.par,
-        playerScore: holeDeets.playerScore,
-      };
-    });
+    })
 
-    console.log(holeList);
-
-    navigation.navigate("Scoreboard", {scoreReturn: holeList})
+    navigation.navigate("Scoreboard", {
+      players: playerList,
+      });
   }
 
   console.log(player);
   return (
     <View>
       <Text>
-        Hole #{holeScore.hole}, Distance to Tee: {holeScore.distance}, Par:{" "}
-        {holeScore.par}
+        Hole #{hole.hole}, Distance to Tee: {hole.distance}, Par: {hole.par}
       </Text>
       <View style={styles.holeScore}>
         <TextInput
           style={styles.holeBox}
           keyboardType="number-pad"
-          onChangeText={(scoreNum) =>
-            // setTempScore({player: player[0].player, score: scoreNum })
-            setTempScore({ player: player[0].player, score: scoreNum })
+          onChangeText={(scoreNum) => {
+            setTempScore(scoreNum)}
           }
-          defaultValue={holeScore.score}
+          // defaultValue={player.hole[key].score}
           clearTextOnFocus="true"
         ></TextInput>
       </View>
       <Pressable
         style={[styles.button, styles.buttonClose]}
-        // onPress={() => navigation.navigate('Scoreboard', {title: route.params.title, hole: hole})
         onPress={() => updateScores()}
       >
         <Text style={styles.textStyle}>Submit score</Text>

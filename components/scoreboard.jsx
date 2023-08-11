@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useFocusEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -7,100 +7,97 @@ import {
   TouchableOpacity,
   useWindowDimensions,
 } from "react-native";
-import courses from "../course.json";
 
 export default function Scoreboard(props) {
   const { navigation, route } = props;
-  const [scoreCard, setScoreCard] = useState(route.params.scoreCard);
-  const [course, setCourse] = useState(scoreCard.holes);
-  const [holeScore, setHoleScore] = useState([]);
-  const [scoreReturn, setScoreReturn] = useState(route.params.scoreReturn);
+  // const [scoreCard, setScoreCard] = useState(route.params.scoreCard);
+  // const [course, setCourse] = useState(scoreCard.course);
+  // const [holes, setHoles] = useState(scoreCard.holes);
+  // const [players, setPlayers] = useState(scoreCard.players);
 
-  console.log(scoreCard);
+  const [course, setCourse] = useState(route.params.course);
+  const [holes, setHoles] = useState(route.params.holes);
+  // const [players, setPlayers] = useState({});
 
-  useEffect(() => {
-    if (!route.params.scoreReturn) {
-      console.log("There is no scoreReturn");
-      setHoleScore(course);
-    } else {
-      console.log("There is a scoreReturn", route.params.scoreReturn);
-      setHoleScore(route.params.scoreReturn);
-    }
-  });
-  function changeScreen(hole, index, playerName) {
-    console.log(index);
+const players = route.params.players;
+
+  console.log(route.params.players);
+console.log(players)
+
+  //This is the function to move to the score screen.
+  function changeScreen(hole, index, player) {
+    console.log(player);
     navigation.navigate("Score", {
-      hole: hole.hole,
-      holeScore,
+      hole: hole,
       key: index,
-      player: playerName,
+      player: player,
+      players: players
     });
   }
 
-  // let totalScore = course.reduce((course.))
-  let courseOut = holeScore.slice(0, 9);
-  let courseIn = holeScore.slice(9, 18);
-
-  console.log(courseOut);
-  console.log(courseIn);
+  let holesOut = holes.slice(0, 9);
+  let holesIn = holes.slice(9, 18);
 
   return (
-    <View
-      style={[
-        styles.container,
-        // { height: useWindowDimensions(screen).height },
-        // { width: useWindowDimensions().width },
-      ]}
-    >
+    <View style={[styles.container]}>
       <View style={styles.scorecardbox}>
         <View
-          style={[
-            styles.scorecard,
-            // { width: useWindowDimensions().width }
-          ]}
+          style={[styles.scorecard, { width: useWindowDimensions().width }]}
         >
           <View>
-            {courseOut.playerScore.map((golfer) => {
-              return(
-                <Text style={styles.nameFont}>{golfer.player.charAt(0)}</Text>)
-               })}
+            <Text style={styles.sideHoleFont}>Hole</Text>
+            <Text style={styles.sideParFont}>Par</Text>
+            {players.map((golfer) => {
+              return (
+                <Text style={styles.sideNameFont}>
+                  {golfer.player.charAt(0)}
+                </Text>
+              );
+            })}
           </View>
-          {courseOut.map((deet, i) => (
-          <View style={styles.scorebox}>
-
+          {holesOut.map((deet, i) => (
+            <View style={styles.scorebox}>
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-              {deet.playerScore.map((golfer) => {
+              {players.map((golfer, j) => {
                 return (
                   <TouchableOpacity
+                    style={styles.button}
                     // key={i}
-                    onPress={() => changeScreen(deet, i, golfer.player)}
+                    onPress={() => changeScreen(deet, i, golfer)}
                   >
-                    <Text style={styles.scoreFont}>{golfer.score}</Text>
+                    <Text style={styles.scoreFont}>{golfer.scores[i]}</Text>
                   </TouchableOpacity>
                 );
               })}
-          </View>
+            </View>
           ))}
         </View>
-
         <View
-          style={[
-            styles.scorecard,
-            //  { width: useWindowDimensions().width }
-          ]}
+          style={[styles.scorecard, { width: useWindowDimensions().width }]}
         >
-          {courseIn.map((deet, i) => (
-            <View style={[styles.scorebox]}>
+          <View>
+            <Text style={styles.sideHoleFont}>Hole</Text>
+            <Text style={styles.sideParFont}>Par</Text>
+            {players.map((golfer) => {
+              return (
+                <Text style={styles.sideNameFont}>
+                  {golfer.player.charAt(0)}
+                </Text>
+              );
+            })}
+          </View>
+          {holesIn.map((deet, i) => (
+            <View style={styles.scorebox}>
               <Text style={styles.holeFont}>{deet.hole}</Text>
               <Text style={styles.parFont}>{deet.par}</Text>
-              {deet.playerScore.map((golfer) => {
+              {players.map((golfer) => {
                 return (
                   <TouchableOpacity
-                    // key={i + 9 + player.name}
-                    onPress={() => changeScreen(deet, i + 9, golfer.player)}
+                    // key={i}
+                    onPress={() => changeScreen(deet, i + 9, golfer)}
                   >
-                    <Text style={styles.scoreFont}>{golfer.score}</Text>
+                    <Text style={styles.scoreFont}>{golfer.scores[i + 9]}</Text>
                   </TouchableOpacity>
                 );
               })}
@@ -118,13 +115,8 @@ export default function Scoreboard(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   scorecardbox: {
-    // height: 800,
+    height: 800,
   },
   courseName: {
     padding: 10,
@@ -155,11 +147,25 @@ const styles = StyleSheet.create({
     borderBottom: "black 2px solid",
     fontSize: "24px",
   },
+  sideHoleFont: {
+    paddingTop: 3,
+    borderBottom: "black 2px solid",
+    fontSize: "24px",
+  },
   parFont: {
     padding: "3px",
     borderBottom: "black 1px dotted",
     fontSize: "19px",
     // border: "black 1px solid"
   },
+  sideParFont: {
+    padding: "3px",
+    borderBottom: "black 1px dotted",
+    fontSize: "19px",
+  },
   scoreFont: { padding: "3px", fontSize: "22px" },
+  sideNameFont: {
+    padding: "3px",
+    fontSize: "22px",
+  },
 });

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import courses from "../course.json";
 
-export default function CourseSelect(props) {
+default function CourseSelect(props) {
   const { navigation, route } = props;
   const players = route.params.players;
   console.log(players);
@@ -24,15 +24,16 @@ export default function CourseSelect(props) {
     let course = courses.courses[courseId];
     let holeCount = course.holes.length;
 
-    let holeScore = Array.from({ length: holeCount }, (_, index) => "0");
+    let holeValue = Array.from({ length: holeCount }, (_, index) => "0");
 
-    const playerScore = players.map((player) => {
+    const courseInfo = {name: course.name, address: course.address
+      }
+    const playerInfo = players.map((player) => {
       return {
         player: player,
-        scores: holeScore,
+        scores: holeValue,
       };
     });
-
     const holeInfo = course.holes.map((hole) => {
       return {
         ...hole,
@@ -42,9 +43,9 @@ export default function CourseSelect(props) {
       };
     });
     const scoreCard = {
-      name: course.name,
+      course: courseInfo,
       holes: holeInfo,
-      players: playerScore,
+      players: playerInfo,
     };
     navigation.navigate("Scoreboard", {
       scoreCard: scoreCard,
