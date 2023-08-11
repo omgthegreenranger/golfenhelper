@@ -3,6 +3,7 @@
         [
             {
                 "name": "Dentonia Golf Course",
+                "address": "Victoria Park, Toronto",
                 "holes": [
                     {   "hole": "1",
                         "distance": "102",
@@ -96,6 +97,7 @@
             },
             {
                 "name": "Don Valley Golf Course",
+                "address": "Victoria Park, Toronto",
                 "holes": [
                     {   "hole": "1",
                         "distance": "110",
@@ -190,6 +192,7 @@
             },
             {
                 "name": "Humber Valley Golf Course",
+                "address": "Victoria Park, Toronto",
                 "holes": [
                     {   "hole": "1",
                         "distance": "110",
@@ -284,6 +287,7 @@
             },
             {
                 "name": "Scarlett Woods Golf Course",
+                "address": "Victoria Park, Toronto",
                 "holes": [
                     {   "hole": "1",
                         "distance": "110",
@@ -378,6 +382,7 @@
             },
             {
                 "name": "Tam O'Shanter Golf Course",
+                "address": "Victoria Park, Toronto",
                 "holes": [
                     {   "hole": "1",
                         "distance": "110",
@@ -472,6 +477,7 @@
             },
             {
                 "name": "Cedar Brae Golf Course",
+                "address": "Victoria Park, Toronto",
                 "holes": [
                     {   "hole": "1",
                         "distance": "437",

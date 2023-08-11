@@ -1,52 +1,73 @@
-import { StyleSheet, Text, View, TextInput, Pressable, useWindowDimensions } from "react-native";
-import courses from "../course.json";
-import React, {useState} from 'react';
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  useWindowDimensions,
+} from "react-native";
+import React, { useState, useEffect } from "react";
 
 export default function Score(props) {
   const { navigation, route } = props;
-  const [hole, setHole ] = useState(route.params.key);
-  const [holeScore, setHoleScore ] = useState(route.params.holeScore[hole]);
-  const [tempScore, setTempScore ] = useState([]);
+  const [key, setKey] = useState(route.params.key);
+  const [hole, setHole] = useState(route.params.hole);
+  const [player, setPlayer] = useState(route.params.player);
+  const [players, setPlayers] = useState(route.params.players)
+  const [tempScore, setTempScore] = useState();
 
-  const player = holeScore.playerScore.filter(golfer =>
-    {
-      if(golfer.player === route.params.player) {
-        console.log("This worked!")
-        return(golfer)
-      } else {
-        console.log("We'll do something about this soon")
-      }
-      return
-    }
-    )
+  console.log(hole);
+  console.log(key);
+  console.log(player);
+  console.log(players);
+
   function updateScores() {
-
-    const newScore = holeScore.map(score => {
-      if(tempScore.hole === score.hole) {
-        console.log("YASSSS")
-        return {...score, score: tempScore.score}
+    const playerScore = player.scores.map((score, i) => {
+      if (i === key) {
+        return(tempScore)
       }
-      return score;
-    });
+        
+      return(score)
+    })
+    const playerList = players.map((playName) => {
+      if(playName.player == player.player) {
+        return({
+          player: player.player,
+          scores: playerScore}
+        )
+      } else {
+        return({
+          player: playName.player,
+          scores: playName.scores}
+        )
+      }
+    })
 
-    setHoleScore(newScore)
-    console.log(newScore)
-    navigation.navigate('Scoreboard', {title: route.params.title, scoreReturn: newScore})
+    navigation.navigate("Scoreboard", {
+      players: playerList,
+      });
   }
+
+  console.log(player);
   return (
     <View>
       <Text>
-        Hole #{holeScore.hole}, Distance to Tee: {holeScore.distance}, Par: {holeScore.par}
+        Hole #{hole.hole}, Distance to Tee: {hole.distance}, Par: {hole.par}
       </Text>
       <View style={styles.holeScore}>
-        <TextInput style={styles.holeBox} onChangeText={scoreNum => setTempScore({hole: holeScore.hole, distance: holeScore.distance, par: holeScore.par, score: scoreNum})} defaultValue={holeScore.score} clearTextOnFocus="true"></TextInput>
+        <TextInput
+          style={styles.holeBox}
+          keyboardType="number-pad"
+          onChangeText={(scoreNum) => {
+            setTempScore(scoreNum)}
+          }
+          // defaultValue={player.hole[key].score}
+          clearTextOnFocus="true"
+        ></TextInput>
       </View>
       <Pressable
         style={[styles.button, styles.buttonClose]}
-        // onPress={() => navigation.navigate('Scoreboard', {title: route.params.title, hole: hole})
-        onPress={() => updateScores()
-        }
+        onPress={() => updateScores()}
       >
         <Text style={styles.textStyle}>Submit score</Text>
       </Pressable>
@@ -66,7 +87,6 @@ const styles = StyleSheet.create({
   },
   holeBox: {
     textAlign: "center",
-
   },
   button: {
     borderRadius: 20,
@@ -84,4 +104,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-})
+});

@@ -12,39 +12,41 @@ import {
 } from "react-native";
 import courses from "../course.json";
 
-export default function CourseSelect(props) {
+default function CourseSelect(props) {
   const { navigation, route } = props;
-
+  const players = route.params.players;
+  console.log(players);
   // on select, let's make the card.
 
-  function cardMakeAndSend(courseId, players) {
+  // Order - Course details -> Hole details (Par, distance, number) -> Player -> Scorecard
+
+  function cardMakeAndSend(courseId) {
     let course = courses.courses[courseId];
-    console.log(course);
-    let playerCount = [...players];
-    const playerScore = playerCount.map(player => {
-      let score = 0
-      return ({
-        ...playerScore,
-        player,
-        score})
-  });
-    console.log(playerScore)
-    const scoresList = course.holes.map((hole) => {
-      return ({
+    let holeCount = course.holes.length;
+
+    let holeValue = Array.from({ length: holeCount }, (_, index) => "0");
+
+    const courseInfo = {name: course.name, address: course.address
+      }
+    const playerInfo = players.map((player) => {
+      return {
+        player: player,
+        scores: holeValue,
+      };
+    });
+    const holeInfo = course.holes.map((hole) => {
+      return {
         ...hole,
         hole: hole.hole,
         distance: hole.distance,
         par: hole.par,
-        playerScore
-      })
+      };
     });
-    const scoreCard = ({
-      name: course.name,
-      holes: scoresList,
-  });
-
-  console.log(scoreCard)
-
+    const scoreCard = {
+      course: courseInfo,
+      holes: holeInfo,
+      players: playerInfo,
+    };
     navigation.navigate("Scoreboard", {
       scoreCard: scoreCard,
     });
@@ -58,7 +60,7 @@ export default function CourseSelect(props) {
             key={i}
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
-              cardMakeAndSend(i, ["Steve", "Bill"]);
+              cardMakeAndSend(i);
             }}
           >
             <Text>{course.name}</Text>
