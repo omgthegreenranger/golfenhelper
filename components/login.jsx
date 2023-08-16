@@ -1,12 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-native/no-color-literals */
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  Button,
   TextInput,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import courses from "../course.json";
 
@@ -27,7 +28,7 @@ export default function Login(props) {
             setPickedHole={setPickedHole}
           />
         ) : (
-          ""
+          <></>
         )}
         {buttonTree[1] ? (
           <PlayerSelect
@@ -64,21 +65,30 @@ export default function Login(props) {
 
 function CourseSelect(props) {
   const { setButtonTree, buttonTree, setPickedHole } = props;
-
   return (
     <View>
+      <View>
+      <Text>Please choose a course:</Text>
+      </View>
       {courses.courses.map((course, i) => {
         return (
-          <Pressable
-            key={i}
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => {
-              setPickedHole(i);
-              setButtonTree([false, true, false, false]);
-            }}
-          >
-            <Text>{course.name}</Text>
-          </Pressable>
+          <View style={styles.course} key={i}>
+            <Button
+              key={i}
+              title={course.name}
+              style={styles.button}
+              onPress={() => {
+                setPickedHole(i);
+                setButtonTree([false, true, false, false]);
+              }}
+            ></Button>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+            >
+              <Text>{course.address}</Text>
+              <Text>Current weather</Text>
+            </View>
+          </View>
         );
       })}
     </View>
@@ -90,38 +100,38 @@ function PlayerSelect(props) {
   return (
     <View style={{ alignSelf: "center" }}>
       <Text>How many players?</Text>
-      <View style={{ flexDirection: "row", alignSelf: "center" }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Pressable
-          style={[styles.button, styles.playerButton]}
+          style={styles.playerButton}
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(1);
           }}
         >
-          <Text>1</Text>
+          <Text style={styles.playercount}>1</Text>
         </Pressable>
         <Pressable
-          style={[styles.button, styles.playerButton]}
+          style={styles.playerButton}
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(2);
           }}
         >
-          <Text>2</Text>
+          <Text style={styles.playercount}>2</Text>
         </Pressable>
         <Pressable
-          style={[styles.button, styles.playerButton]}
+          style={styles.playerButton}
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(3);
           }}
         >
-          <Text>3</Text>
+          <Text style={styles.playercount}>3</Text>
         </Pressable>
         <Pressable
-          style={[styles.button, styles.playerButton]}
+          style={styles.playerButton}
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(4);
           }}
         >
-          <Text>4</Text>
+          <Text style={styles.playercount}>4</Text>
         </Pressable>
       </View>
     </View>
@@ -151,12 +161,12 @@ function PlayerNames(props) {
           playerNames[i] = "Player " + (i + 1);
           let playName = playerNames[i];
           return (
-            <View>
-              <Text style={styles.playername}>{playName}</Text>
+            <View style={styles.playerbox} key={i}>
               <TextInput
                 style={styles.entername}
                 key={i}
                 defaultValue={playName}
+                clearTextOnFocus="true"
                 onChangeText={(playerNom) => {
                   playerNames[i] = playerNom;
                 }}
@@ -165,31 +175,26 @@ function PlayerNames(props) {
           );
         }
       })}
-      <TouchableOpacity
+      <Button
         style={[styles.button, styles.goButton]}
+        title="Start Game!"
         onPress={() => {
           setButtonTree([false, false, false, true]), setPlayers(playerNames);
         }}
-      >
-        <Text>Let's go!</Text>
-      </TouchableOpacity>
+      ></Button>
     </View>
   );
 }
 
 function GameReview(props) {
   const { pickedHole, playerCount, players, navigation } = props;
-  console.log(pickedHole);
-  console.log(playerCount);
-  console.log(players);
-
   let course = courses.courses[pickedHole];
   let holeCount = course.holes.length;
 
-  let holeValue = Array.from({ length: holeCount }, (_, index) => "0");
+  let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
 
   const courseInfo = { name: course.name, address: course.address };
-  const playerInfo = players.map((player) => {
+  const playerInfo = players.map((player, i) => {
     return {
       player: player,
       scores: holeValue,
@@ -208,34 +213,31 @@ function GameReview(props) {
     holes: holeInfo,
     players: playerInfo,
   };
-  console.log(scoreCard.players)
   return (
-    <View>
-      <View>
+    <View style={styles.recapBlock}>
+      <Text>Round details recap</Text>
+      <View style={styles.recapCourseBlock}>
         <Text>{scoreCard.course.name}</Text>
         <Text>{scoreCard.course.address}</Text>
       </View>
-      <View>
+      <View style={styles.recapPlayersBlock}>
         {scoreCard.players.map((golfer, i) => {
-          console.log(golfer)
-          return(
-        <Text>{golfer.player}</Text>
-       ) })}
+          return <Text key={i}>{golfer.player}</Text>;
+        })}
       </View>
-      <TouchableOpacity
-        style={[styles.button, styles.buttonClose]}
+      <Pressable
+        style={[styles.button, styles.goButton]}
         onPress={() =>
           navigation.navigate("Scoreboard", {
             // scoreCard: scoreCard,
             course: courseInfo,
             players: playerInfo,
             holes: holeInfo,
-
           })
         }
       >
         <Text>Start Game</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
@@ -243,38 +245,60 @@ function GameReview(props) {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
-    padding: 10,
     elevation: 2,
+    margin: 10,
+    padding: 20,
   },
-  playerButton: {
-    backgroundColor: "#2196F3",
+  course: {
+    padding: 10,
+  },
+  entername: {
+    borderColor: "black",
+    borderWidth: 1,
+    fontSize: "larger",
+    fontStyle: "italic",
   },
   goButton: {
     backgroundColor: "#2196F3",
   },
-  startButton: {
+  playerButton: {
     backgroundColor: "#2196F3",
+    borderRadius: 20,
+    elevation: 2,
+    margin: 5,
+    padding: 5,
   },
-  playername: {
+  playerbox: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+  playercount: {
+    fontSize: "xxx-large",
     fontStyle: "bold",
-    fontSize: "large",
+    margin: 10,
+    padding: 10,
   },
-  entername: {
-    fontStyle: "italic",
-    fontSize: "larger",
+  recapBlock: {
+    backgroundColor: "green",
+    flexDirection: "column",
+    padding: 15,
   },
-  background: {
-    flex: 1,
+  recapCourseBlock: {
+    backgroundColor: "#C2B280",
+    borderColor: "brown",
+    borderRadius: 10,
+    borderWidth: 2,
+    margin: 15,
+    padding: 5,
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+  recapPlayersBlock: {
+    backgroundColor: "#C2B280",
+    borderColor: "brown",
+    borderRadius: 10,
+    borderWidth: 2,
+    flexDirection: "row",
+    margin: 15,
+    padding: 5,
   },
 });
