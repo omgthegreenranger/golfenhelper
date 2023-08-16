@@ -52,7 +52,7 @@ export default function Score(props) {
           style={styles.holeBox}
           keyboardType="number-pad"
           onChangeText={(scoreNum) => {
-            setTempScore(scoreNum)}
+            setTempScore(Number(scoreNum))}
           }
           // defaultValue={player.hole[key].score}
           clearTextOnFocus="true"
