@@ -1,14 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-native/no-color-literals */
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   View,
   Button,
   TextInput,
-  TouchableOpacity,
   Pressable,
-  FlatList,
 } from "react-native";
 import courses from "../course.json";
 
@@ -29,7 +28,7 @@ export default function Login(props) {
             setPickedHole={setPickedHole}
           />
         ) : (
-          ""
+          <></>
         )}
         {buttonTree[1] ? (
           <PlayerSelect
@@ -68,10 +67,12 @@ function CourseSelect(props) {
   const { setButtonTree, buttonTree, setPickedHole } = props;
   return (
     <View>
+      <View>
       <Text>Please choose a course:</Text>
+      </View>
       {courses.courses.map((course, i) => {
         return (
-          <View style={styles.course}>
+          <View style={styles.course} key={i}>
             <Button
               key={i}
               title={course.name}
@@ -102,7 +103,6 @@ function PlayerSelect(props) {
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Pressable
           style={styles.playerButton}
-          // title="1"
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(1);
           }}
@@ -111,7 +111,6 @@ function PlayerSelect(props) {
         </Pressable>
         <Pressable
           style={styles.playerButton}
-          // title="2"
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(2);
           }}
@@ -120,7 +119,6 @@ function PlayerSelect(props) {
         </Pressable>
         <Pressable
           style={styles.playerButton}
-          // title="3"
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(3);
           }}
@@ -129,7 +127,6 @@ function PlayerSelect(props) {
         </Pressable>
         <Pressable
           style={styles.playerButton}
-          // title="4"
           onPress={() => {
             setButtonTree([false, false, true, false]), setPlayerCount(4);
           }}
@@ -164,7 +161,7 @@ function PlayerNames(props) {
           playerNames[i] = "Player " + (i + 1);
           let playName = playerNames[i];
           return (
-            <View style={styles.playerbox}>
+            <View style={styles.playerbox} key={i}>
               <TextInput
                 style={styles.entername}
                 key={i}
@@ -184,9 +181,7 @@ function PlayerNames(props) {
         onPress={() => {
           setButtonTree([false, false, false, true]), setPlayers(playerNames);
         }}
-      >
-        {/* <Text>Let's go!</Text> */}
-      </Button>
+      ></Button>
     </View>
   );
 }
@@ -199,7 +194,7 @@ function GameReview(props) {
   let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
 
   const courseInfo = { name: course.name, address: course.address };
-  const playerInfo = players.map((player) => {
+  const playerInfo = players.map((player, i) => {
     return {
       player: player,
       scores: holeValue,
@@ -227,7 +222,7 @@ function GameReview(props) {
       </View>
       <View style={styles.recapPlayersBlock}>
         {scoreCard.players.map((golfer, i) => {
-          return <Text>{golfer.player}</Text>;
+          return <Text key={i}>{golfer.player}</Text>;
         })}
       </View>
       <Pressable
@@ -250,11 +245,32 @@ function GameReview(props) {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
-    padding: 20,
     elevation: 2,
     margin: 10,
+    padding: 20,
   },
   course: {
+    padding: 10,
+  },
+  entername: {
+    borderColor: "black",
+    borderWidth: 1,
+    fontSize: "larger",
+    fontStyle: "italic",
+  },
+  goButton: {
+    backgroundColor: "#2196F3",
+  },
+  playerButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 20,
+    elevation: 2,
+    margin: 5,
+    padding: 5,
+  },
+  playerbox: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 10,
   },
   playercount: {
@@ -263,62 +279,26 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
   },
-  playerButton: {
-    borderRadius: 20,
-    padding: 5,
-    elevation: 2,
-    margin: 5,
-    backgroundColor: "#2196F3",
-  },
-  goButton: {
-    backgroundColor: "#2196F3",
-  },
-  startButton: {
-    backgroundColor: "#2196F3",
-  },
-  playername: {
-    fontStyle: "bold",
-    fontSize: "large",
-  },
-  playerbox: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10,
-  },
-  entername: {
-    fontStyle: "italic",
-    fontSize: "larger",
-    borderWidth: 1,
-    borderColor: "black",
-  },
-  background: {
-    flex: 1,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   recapBlock: {
+    backgroundColor: "green",
     flexDirection: "column",
     padding: 15,
-    backgroundColor: "green"
   },
   recapCourseBlock: {
+    backgroundColor: "#C2B280",
+    borderColor: "brown",
     borderRadius: 10,
+    borderWidth: 2,
     margin: 15,
     padding: 5,
-    borderColor: "brown",
-    backgroundColor: "#C2B280",
-    borderWidth: 2,
   },
-  recapPlayersBlock: { 
-  borderRadius: 10,
-  backgroundColor: "#C2B280",
+  recapPlayersBlock: {
+    backgroundColor: "#C2B280",
+    borderColor: "brown",
+    borderRadius: 10,
+    borderWidth: 2,
     flexDirection: "row",
     margin: 15,
     padding: 5,
-    borderColor: "brown",
-    borderWidth: 2,
   },
 });

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
+import React from "react";
 import Score from "./components/score.jsx";
 import Scoreboard from "./components/scoreboard.jsx";
 import {
@@ -7,12 +6,9 @@ import {
 } from "react-native";
 import {
   NavigationContainer,
-  Linking,
-  Platform,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./components/login.jsx";
-const image = {uri: './assets/golf-background.png'}
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -38,7 +34,6 @@ export default function App() {
         <Stack.Screen
           name="Score"
           component={Score}
-          // options={({ route }) => ({ players: playerList})}
         />
       </Stack.Navigator>
 
@@ -47,9 +42,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  // eslint-disable-next-line react-native/no-color-literals
   container: {
-    backgroundColor: "#8BC34A",
     alignItems: "center",
+    backgroundColor: "#8BC34A",
     justifyContent: "center",
   },
 });

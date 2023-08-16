@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-color-literals */
 import {
   StyleSheet,
   Text,
@@ -69,28 +70,25 @@ export default function Score(props) {
 }
 
 const styles = StyleSheet.create({
-  holeScore: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 22,
-    padding: 15,
-    border: "brown 3px solid",
-    borderRadius: 2,
+  button: {
+    borderRadius: 20,
+    elevation: 2,
+    padding: 10,
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
   },
   holeBox: {
     textAlign: "center",
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
+  holeScore: {
+    alignItems: "center",
+    border: "brown 3px solid",
+    borderRadius: 2,
+    flex: 1,
+    justifyContent: "center",
+    margin: 22,
+    padding: 15,
   },
   textStyle: {
     color: "white",
