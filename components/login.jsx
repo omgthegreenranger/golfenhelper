@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import courses from "../course.json";
+// import courses from "../course.json";
 
 export default function Login(props) {
   const { navigation, route } = props;
@@ -17,6 +17,29 @@ export default function Login(props) {
   const [playerCount, setPlayerCount] = useState();
   const [players, setPlayers] = useState([]);
   const [pickedHole, setPickedHole] = useState();
+  const [courses, setCourses] = useState([]);
+  const [courseLoading, setCourseLoading] = useState(true);
+  const [holeDetails, setHoleDetails] = useState([]);
+  const [holeLoading, setHoleLoading] = useState(true);
+
+  async function courseList() {
+    const courseFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: "[out:json][timeout:25];(area[\"name\"=\"Toronto\"];)->.searchArea;nwr[\"leisure\"=\"golf_course\"](area.searchArea);out body;"
+    })
+      .then(response => response.json())
+      .then(data => { console.log(data); setCourses(data); setCourseLoading(false) })
+      .catch(error => console.error(error));
+    ;
+    console.log("The stuff", await courseFetch)
+
+  }
+
+  useEffect(() => { courseList() }, [courseLoading]);
 
   return (
     <View>
@@ -26,6 +49,9 @@ export default function Login(props) {
             setButtonTree={setButtonTree}
             navigation={navigation}
             setPickedHole={setPickedHole}
+            courses={courses}
+            setCourses={setCourses}
+            courseLoading={courseLoading}
           />
         ) : (
           <></>
@@ -64,28 +90,31 @@ export default function Login(props) {
 }
 
 function CourseSelect(props) {
-  const { setButtonTree, buttonTree, setPickedHole } = props;
-  console.log(courseList());
+  const { setButtonTree, buttonTree, setPickedHole, courses, setCourses, courseLoading } = props;
+  // console.log("Courses", courses.elements)
+  const elements = courses.elements;
+  console.log(courseLoading)
   return (
     <View>
       <View>
-      <Text>Please choose a course:</Text>
+        <Text>Please choose a course:</Text>
       </View>
-      {courses.courses.map((course, i) => {
+      {courseLoading ? <View><Text>Loading Text</Text></View> : elements.map((course, i) => {
+        {/* {courseStuff.map((course, i) => { */ }
+        // console.log(course)
         return (
           <View style={styles.course} key={i}>
             <Button
               key={i}
-              title={course.name}
+              title={course.tags.name}
               style={styles.button}
               onPress={() => {
-                setPickedHole(i);
+                setPickedHole(course.id);
                 setButtonTree([false, true, false, false]);
               }}
             ></Button>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-            >
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
               <Text>{course.address}</Text>
               <Text>Current weather</Text>
             </View>
@@ -96,18 +125,7 @@ function CourseSelect(props) {
   );
 }
 
-async function courseList() { 
-  const courseFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body:"[out:json][timeout:25];(area[\"name\"=\"Toronto\"];)->.searchArea;nwr[\"leisure\"=\"golf_course\"](area.searchArea);out body;"
-  });
-  const answer = await courseFetch.json();
-  return answer
-}
+
 function PlayerSelect(props) {
   const { setButtonTree, buttonTree, setPlayerCount } = props;
   return (
