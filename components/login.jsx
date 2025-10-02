@@ -65,6 +65,7 @@ export default function Login(props) {
 
 function CourseSelect(props) {
   const { setButtonTree, buttonTree, setPickedHole } = props;
+  console.log(courseList());
   return (
     <View>
       <View>
@@ -95,6 +96,18 @@ function CourseSelect(props) {
   );
 }
 
+async function courseList() { 
+  const courseFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body:"[out:json][timeout:25];(area[\"name\"=\"Toronto\"];)->.searchArea;nwr[\"leisure\"=\"golf_course\"](area.searchArea);out body;"
+  });
+  const answer = await courseFetch.json();
+  return answer
+}
 function PlayerSelect(props) {
   const { setButtonTree, buttonTree, setPlayerCount } = props;
   return (

@@ -1,4 +1,4 @@
-import React from "react";
+import { React, StrictMode } from "react";
 import Score from "./components/score.jsx";
 import Scoreboard from "./components/scoreboard.jsx";
 import {
@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   return (
-    
+    <StrictMode>
     <NavigationContainer
     style={styles.container}
     >
@@ -38,6 +38,7 @@ export default function App() {
       </Stack.Navigator>
 
     </NavigationContainer>
+    </StrictMode>
   );
 }
 
