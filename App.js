@@ -18,7 +18,8 @@ export default function App() {
     <NavigationContainer
     style={styles.container}
     >
-     <Stack.Navigator initialRouteName="Login" style={styles.container}
+     <Stack.Navigator initialRouteName="Login" 
+      style={styles.container}
       screenOptions={{
         headerStyle: {elevation: 0 },
       }}
