@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,15 +8,47 @@ import {
   Button,
   TextInput,
   Pressable,
+  Animated
 } from "react-native";
-import courses from "../course.json";
+// import courses from "../course.json";
+import CourseSelect from "./course";
+import { PlayerSelect, PlayerNames } from "./players";
 
 export default function Login(props) {
   const { navigation, route } = props;
   const [buttonTree, setButtonTree] = useState([true, false, false, false]);
-  const [playerCount, setPlayerCount] = useState();
-  const [players, setPlayers] = useState([]);
-  const [pickedHole, setPickedHole] = useState();
+  // const [playerCount, setPlayerCount] = useState(); // temporary for dev
+  // const [players, setPlayers] = useState([]);
+  const [playerCount, setPlayerCount] = useState(1); // temporary for dev
+  const [players, setPlayers] = useState(["Player 1"]) // temporary for dev
+  const [pickedCourse, setPickedCourse] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [courseLoading, setCourseLoading] = useState(true);
+  const [holeDetails, setHoleDetails] = useState([]);
+  const [holeLoading, setHoleLoading] = useState(true);
+
+  function resetButtons() {
+    setButtonTree([true, false, false, false]);
+    setPickedCourse();
+    setCourseLoading(true);
+  }
+
+  async function courseList() {
+    const coursesFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: "[out:json][timeout:25];way(around:10000,43.6886058, -79.3004177)[\"leisure\"=\"golf_course\"];out tags;"
+    })
+      .then(response => response.json())
+      .then(data => { console.log("Fetched data success: ", data); setCourses(data); setCourseLoading(false) })
+      .catch(error => console.error("Sorry, no working.", error));
+    ;
+
+  }
+  useEffect(() => { courseList() }, []);
 
   return (
     <View>
@@ -25,7 +57,10 @@ export default function Login(props) {
           <CourseSelect
             setButtonTree={setButtonTree}
             navigation={navigation}
-            setPickedHole={setPickedHole}
+            setPickedCourse={setPickedCourse}
+            courses={courses}
+            setCourses={setCourses}
+            courseLoading={courseLoading}
           />
         ) : (
           <></>
@@ -51,135 +86,21 @@ export default function Login(props) {
         {buttonTree[3] ? (
           <GameReview
             navigation={navigation}
-            pickedHole={pickedHole}
+            pickedCourse={pickedCourse}
             playerCount={playerCount}
             players={players}
+          //  holes={holes}
+          //  setHoles={setHoles}
           />
         ) : (
           <></>
         )}
       </View>
-    </View>
-  );
-}
-
-function CourseSelect(props) {
-  const { setButtonTree, buttonTree, setPickedHole } = props;
-  return (
-    <View>
-      <View>
-      <Text>Please choose a course:</Text>
-      </View>
-      {courses.courses.map((course, i) => {
-        return (
-          <View style={styles.course} key={i}>
-            <Button
-              key={i}
-              title={course.name}
-              style={styles.button}
-              onPress={() => {
-                setPickedHole(i);
-                setButtonTree([false, true, false, false]);
-              }}
-            ></Button>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-            >
-              <Text>{course.address}</Text>
-              <Text>Current weather</Text>
-            </View>
-          </View>
-        );
-      })}
-    </View>
-  );
-}
-
-function PlayerSelect(props) {
-  const { setButtonTree, buttonTree, setPlayerCount } = props;
-  return (
-    <View style={{ alignSelf: "center" }}>
-      <Text>How many players?</Text>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Pressable
-          style={styles.playerButton}
-          onPress={() => {
-            setButtonTree([false, false, true, false]), setPlayerCount(1);
-          }}
-        >
-          <Text style={styles.playercount}>1</Text>
-        </Pressable>
-        <Pressable
-          style={styles.playerButton}
-          onPress={() => {
-            setButtonTree([false, false, true, false]), setPlayerCount(2);
-          }}
-        >
-          <Text style={styles.playercount}>2</Text>
-        </Pressable>
-        <Pressable
-          style={styles.playerButton}
-          onPress={() => {
-            setButtonTree([false, false, true, false]), setPlayerCount(3);
-          }}
-        >
-          <Text style={styles.playercount}>3</Text>
-        </Pressable>
-        <Pressable
-          style={styles.playerButton}
-          onPress={() => {
-            setButtonTree([false, false, true, false]), setPlayerCount(4);
-          }}
-        >
-          <Text style={styles.playercount}>4</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
-}
-
-function PlayerNames(props) {
-  const {
-    setButtonTree,
-    buttonTree,
-    navigation,
-    playerCount,
-    players,
-    setPlayers,
-  } = props;
-
-  const playerNum = Array.from(
-    { length: playerCount },
-    (_, index) => index + 1
-  );
-
-  let playerNames = [];
-  return (
-    <View>
-      {playerNum.map((player, i) => {
-        if (i < playerCount) {
-          playerNames[i] = "Player " + (i + 1);
-          let playName = playerNames[i];
-          return (
-            <View style={styles.playerbox} key={i}>
-              <TextInput
-                style={styles.entername}
-                key={i}
-                defaultValue={playName}
-                clearTextOnFocus="true"
-                onChangeText={(playerNom) => {
-                  playerNames[i] = playerNom;
-                }}
-              ></TextInput>
-            </View>
-          );
-        }
-      })}
       <Button
         style={[styles.button, styles.goButton]}
-        title="Start Game!"
+        title="Reset"
         onPress={() => {
-          setButtonTree([false, false, false, true]), setPlayers(playerNames);
+          resetButtons();
         }}
       ></Button>
     </View>
@@ -187,23 +108,57 @@ function PlayerNames(props) {
 }
 
 function GameReview(props) {
-  const { pickedHole, playerCount, players, navigation } = props;
-  let course = courses.courses[pickedHole];
-  let holeCount = course.holes.length;
+  const { pickedCourse, playerCount, players, navigation, courses} = props;
+  const [course, setCourse] = useState([])
+  const [holesLoading, setHolesLoading] = useState(true)
+  let holes = [];
+  async function getHoles() {
+    await fetch('https://www.overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: "[out:json][timeout:25];way(" + pickedCourse.id + ");map_to_area ->.golfcourse;way[\"golf\"=\"hole\"](area.golfcourse)->.holes;.golfcourse out center;.holes out tags;"
+    })
+      .then(response => response.json())
+      .then(data => { console.log("The data", data); setCourse(data); setHolesLoading(false) })
+      .catch(error => console.error("Sorry, no working.", error));
+    ;
+  }
+  useEffect(() => { getHoles() }, []);
+  console.log("Holes Loading: ", holesLoading)
+  if (!holesLoading) {
+    // console.log("Let's go!", course)
+    let i = 0
+    course.elements.map((hole) => {
+      if (hole.tags.golf === "hole") {
+        console.log("hole info", i, hole.tags)
+        holes[i] = { "hole": hole.tags.ref, "par": hole.tags.par };
+        i++
+      }
+    })
+  }
+  holesLoading ? console.log("Still going") : console.log("Done!", holes)
+
+
+
+
+  let holeCount = holes.length;
 
   let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
 
-  const courseInfo = { name: course.name, address: course.address };
+  const courseInfo = { name: pickedCourse.tags.name, address: pickedCourse.address };
   const playerInfo = players.map((player, i) => {
     return {
       player: player,
       scores: holeValue,
     };
   });
-  const holeInfo = course.holes.map((hole) => {
+  const holeInfo = holes.map((hole) => {
     return {
       ...hole,
-      hole: hole.hole,
+      hole: parseInt(hole.hole),
       distance: hole.distance,
       par: hole.par,
     };
@@ -213,6 +168,7 @@ function GameReview(props) {
     holes: holeInfo,
     players: playerInfo,
   };
+  console.log(scoreCard)
   return (
     <View style={styles.recapBlock}>
       <Text>Round details recap</Text>
@@ -229,10 +185,12 @@ function GameReview(props) {
         style={[styles.button, styles.goButton]}
         onPress={() =>
           navigation.navigate("Scoreboard", {
-            // scoreCard: scoreCard,
-            course: courseInfo,
-            players: playerInfo,
-            holes: holeInfo,
+            scoreCard: scoreCard,
+            // course: courseInfo,
+            // players: playerInfo,
+            // holes: holeInfo,
+            holes: holes,
+          //  setHoles: setHoles
           })
         }
       >
@@ -242,7 +200,7 @@ function GameReview(props) {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     elevation: 2,
@@ -300,5 +258,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 15,
     padding: 5,
-  },
+  }
+
 });
