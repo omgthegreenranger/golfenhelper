@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   return (
-    <StrictMode>
+    // <StrictMode>
     <NavigationContainer
     style={styles.container}
     >
@@ -39,7 +39,7 @@ export default function App() {
       </Stack.Navigator>
 
     </NavigationContainer>
-    </StrictMode>
+    // </StrictMode>
   );
 }
 

@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
   Pressable,
+  Animated
 } from "react-native";
 // import courses from "../course.json";
 import CourseSelect from "./course";
@@ -16,9 +17,11 @@ import { PlayerSelect, PlayerNames } from "./players";
 export default function Login(props) {
   const { navigation, route } = props;
   const [buttonTree, setButtonTree] = useState([true, false, false, false]);
-  const [playerCount, setPlayerCount] = useState();
-  const [players, setPlayers] = useState([]);
-  const [pickedCourse, setPickedCourse] = useState();
+  // const [playerCount, setPlayerCount] = useState(); // temporary for dev
+  // const [players, setPlayers] = useState([]);
+  const [playerCount, setPlayerCount] = useState(1); // temporary for dev
+  const [players, setPlayers] = useState(["Player 1"]) // temporary for dev
+  const [pickedCourse, setPickedCourse] = useState([]);
   const [courses, setCourses] = useState([]);
   const [courseLoading, setCourseLoading] = useState(true);
   const [holeDetails, setHoleDetails] = useState([]);
@@ -37,16 +40,15 @@ export default function Login(props) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: "[out:json][timeout:25];way(around:10000,43.6886058, -79.3004177)[\"leisure\"=\"golf_course\"];out body;"
+      body: "[out:json][timeout:25];way(around:10000,43.6886058, -79.3004177)[\"leisure\"=\"golf_course\"];out tags;"
     })
       .then(response => response.json())
-      .then(data => { console.log(data); setCourses(data); setCourseLoading(false) })
-      .catch(error => console.error(error));
+      .then(data => { console.log("Fetched data success: ", data); setCourses(data); setCourseLoading(false) })
+      .catch(error => console.error("Sorry, no working.", error));
     ;
-    console.log("The stuff", await coursesFetch)
 
   }
-  useEffect(() => { courseList() }, [courseLoading]);
+  useEffect(() => { courseList() }, []);
 
   return (
     <View>
@@ -87,6 +89,8 @@ export default function Login(props) {
             pickedCourse={pickedCourse}
             playerCount={playerCount}
             players={players}
+          //  holes={holes}
+          //  setHoles={setHoles}
           />
         ) : (
           <></>
@@ -104,94 +108,96 @@ export default function Login(props) {
 }
 
 function GameReview(props) {
-  const { pickedCourse, playerCount, players, navigation, courses } = props;
+  const { pickedCourse, playerCount, players, navigation, courses} = props;
   const [course, setCourse] = useState([])
   const [holesLoading, setHolesLoading] = useState(true)
+  let holes = [];
   async function getHoles() {
-    const courseFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
+    await fetch('https://www.overpass-api.de/api/interpreter', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: "[out:json][timeout:25];way(" + pickedCourse + ");map_to_area ->.golfcourse;way[\"golf\"=\"hole\"](area.golfcourse);(._;>;);out tags;"
+      body: "[out:json][timeout:25];way(" + pickedCourse.id + ");map_to_area ->.golfcourse;way[\"golf\"=\"hole\"](area.golfcourse)->.holes;.golfcourse out center;.holes out tags;"
     })
       .then(response => response.json())
-      .then(data => { console.log(data); setCourse(data); setHolesLoading(false) })
-      .catch(error => console.error(error));
+      .then(data => { console.log("The data", data); setCourse(data); setHolesLoading(false) })
+      .catch(error => console.error("Sorry, no working.", error));
     ;
-    console.log("The hole stuff", await courseFetch)
   }
-  // let course = pickedCourse;
-  useEffect(() => { getHoles() }, [holesLoading]);
-
-  let holes = [] 
+  useEffect(() => { getHoles() }, []);
+  console.log("Holes Loading: ", holesLoading)
   if (!holesLoading) {
-      console.log("Let's go!", course)
-      course.elements.map((hole, i) => {
-        if (hole.type === "way") {
-          console.log(hole.tags)
+    // console.log("Let's go!", course)
+    let i = 0
+    course.elements.map((hole) => {
+      if (hole.tags.golf === "hole") {
+        console.log("hole info", i, hole.tags)
+        holes[i] = { "hole": hole.tags.ref, "par": hole.tags.par };
+        i++
+      }
+    })
+  }
+  holesLoading ? console.log("Still going") : console.log("Done!", holes)
+
+
+
+
+  let holeCount = holes.length;
+
+  let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
+
+  const courseInfo = { name: pickedCourse.tags.name, address: pickedCourse.address };
+  const playerInfo = players.map((player, i) => {
+    return {
+      player: player,
+      scores: holeValue,
+    };
+  });
+  const holeInfo = holes.map((hole) => {
+    return {
+      ...hole,
+      hole: parseInt(hole.hole),
+      distance: hole.distance,
+      par: hole.par,
+    };
+  });
+  const scoreCard = {
+    course: courseInfo,
+    holes: holeInfo,
+    players: playerInfo,
+  };
+  console.log(scoreCard)
+  return (
+    <View style={styles.recapBlock}>
+      <Text>Round details recap</Text>
+      <View style={styles.recapCourseBlock}>
+        <Text>{scoreCard.course.name}</Text>
+        <Text>{scoreCard.course.address}</Text>
+      </View>
+      <View style={styles.recapPlayersBlock}>
+        {scoreCard.players.map((golfer, i) => {
+          return <Text key={i}>{golfer.player}</Text>;
+        })}
+      </View>
+      <Pressable
+        style={[styles.button, styles.goButton]}
+        onPress={() =>
+          navigation.navigate("Scoreboard", {
+            scoreCard: scoreCard,
+            // course: courseInfo,
+            // players: playerInfo,
+            // holes: holeInfo,
+            holes: holes,
+          //  setHoles: setHoles
+          })
         }
-      })
-    }
-
-  console.log(holes)
-  holesLoading ? console.log("Still going") : console.log("Done!")
-
-
-
-
-  // let holeCount = course.holes.length;
-
-  // let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
-
-  // const courseInfo = { name: course.name, address: course.address };
-  // const playerInfo = players.map((player, i) => {
-  //   return {
-  //     player: player,
-  //     scores: holeValue,
-  //   };
-  // });
-  // const holeInfo = course.holes.map((hole) => {
-  //   return {
-  //     ...hole,
-  //     hole: hole.hole,
-  //     distance: hole.distance,
-  //     par: hole.par,
-  //   };
-  // });
-  // const scoreCard = {
-  //   course: courseInfo,
-  //   holes: holeInfo,
-  //   players: playerInfo,
-  // };
-  // return (
-  //   <View style={styles.recapBlock}>
-  //     <Text>Round details recap</Text>
-  //     <View style={styles.recapCourseBlock}>
-  //       <Text>{scoreCard.course.name}</Text>
-  //       <Text>{scoreCard.course.address}</Text>
-  //     </View>
-  //     <View style={styles.recapPlayersBlock}>
-  //       {scoreCard.players.map((golfer, i) => {
-  //         return <Text key={i}>{golfer.player}</Text>;
-  //       })}
-  //     </View>
-  //     <Pressable
-  //       style={[styles.button, styles.goButton]}
-  //       onPress={() =>
-  //         navigation.navigate("Scoreboard", {
-  //           // scoreCard: scoreCard,
-  //           course: courseInfo,
-  //           players: playerInfo,
-  //           holes: holeInfo,
-  //         })
-  //       }
-  //     >
-  //       <Text>Start Game</Text>
-  //     </Pressable>
-  //   </View>
-  // );
+      >
+        <Text>Start Game</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 export const styles = StyleSheet.create({
@@ -252,5 +258,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 15,
     padding: 5,
-  },
+  }
+
 });

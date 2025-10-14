@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   Button,
   TextInput,
   Pressable,
+  Animated
 } from "react-native";
 import { styles } from "./login";
 
@@ -13,6 +14,28 @@ import { styles } from "./login";
 export default function CourseSelect(props) {
   const { setButtonTree, buttonTree, setPickedCourse, courses, setCourses, courseLoading } = props;
   // console.log("Courses", courses.elements)
+    const LoadingPulse = props => {
+      const pulseAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+  
+      useEffect(() => {
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 2,
+//          easing: Easing.back(),
+          useNativeDriver: true,
+        }).start();
+      }, [pulseAnim]);
+  
+      return (
+        <Animated.View // Special animatable View
+          style={{
+            ...props.style,
+            opacity: pulseAnim, // Bind opacity to animated value
+          }}>
+          {props.children}
+        </Animated.View>
+      );
+    };
   const elements = courses.elements;
   console.log(courseLoading)
   return (
@@ -20,7 +43,7 @@ export default function CourseSelect(props) {
       <View>
         <Text>Please choose a course:</Text>
       </View>
-      {courseLoading ? <View><Text>Loading Text</Text></View> : elements.map((course, i) => {
+      {courseLoading ? <View><LoadingPulse>Loading Text</LoadingPulse></View> : elements.map((course, i) => {
         return (
           <View style={styles.course} key={i}>
             <Button
@@ -28,8 +51,9 @@ export default function CourseSelect(props) {
               title={course.tags.name}
               style={styles.button}
               onPress={() => {
-                setPickedCourse(course.id);
-                setButtonTree([false, true, false, false]);
+                setPickedCourse(course);
+                // setButtonTree([false, true, false, false]); ### DISABLING FOR DEVELOPMENT
+                setButtonTree([false, false, false, true]);
               }}
             ></Button>
             <View
@@ -40,62 +64,6 @@ export default function CourseSelect(props) {
           </View>
         );
       })}
-    </View>
-  );
-}
-
-function GameReview(props) {
-  const { pickedCourse, playerCount, players, navigation } = props;
-  let course = courses.courses[pickedCourse];
-  let holeCount = course.holes.length;
-
-  let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
-
-  const courseInfo = { name: course.name, address: course.address };
-  const playerInfo = players.map((player, i) => {
-    return {
-      player: player,
-      scores: holeValue,
-    };
-  });
-  const holeInfo = course.holes.map((hole) => {
-    return {
-      ...hole,
-      hole: hole.hole,
-      distance: hole.distance,
-      par: hole.par,
-    };
-  });
-  const scoreCard = {
-    course: courseInfo,
-    holes: holeInfo,
-    players: playerInfo,
-  };
-  return (
-    <View style={styles.recapBlock}>
-      <Text>Round details recap</Text>
-      <View style={styles.recapCourseBlock}>
-        <Text>{scoreCard.course.name}</Text>
-        <Text>{scoreCard.course.address}</Text>
-      </View>
-      <View style={styles.recapPlayersBlock}>
-        {scoreCard.players.map((golfer, i) => {
-          return <Text key={i}>{golfer.player}</Text>;
-        })}
-      </View>
-      <Pressable
-        style={[styles.button, styles.goButton]}
-        onPress={() =>
-          navigation.navigate("Scoreboard", {
-            // scoreCard: scoreCard,
-            course: courseInfo,
-            players: playerInfo,
-            holes: holeInfo,
-          })
-        }
-      >
-        <Text>Start Game</Text>
-      </Pressable>
     </View>
   );
 }

@@ -11,12 +11,13 @@ import {
 } from "react-native";
 
 export default function Scoreboard(props) {
-  const { navigation, route } = props;
-  const [holes, setHoles] = useState(route.params.holes);
-  const players = route.params.players;
+  const { scoreCard, navigation, route, holes } = props;
+  // const [holes, setHoles] = useState(route.params.holes);
+  const scorecard = route.params.scoreCard
+  const players = scorecard.players;
   const [progress, setProgress] = useState(0);
 
-
+  console.log(holes);
   const progressHole = () => {
     for(let player of players){
       console.log(player)
@@ -39,9 +40,8 @@ export default function Scoreboard(props) {
       players: players,
     });
   }
-
-  let holesOut = holes.slice(0, 9);
-  let holesIn = holes.slice(9, 18);
+  let holesOut = scorecard.holes.slice(0, 9);
+  let holesIn = scorecard.holes.slice(9, 18);
 
 
 
