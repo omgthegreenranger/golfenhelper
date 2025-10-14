@@ -11,16 +11,15 @@ import {
   Animated
 } from "react-native";
 // import courses from "../course.json";
-import CourseSelect from "./course";
-import { PlayerSelect, PlayerNames } from "./players";
+import CourseSelect from "../course/Course";
+import { PlayerSelect, PlayerNames } from "../players/Players";
+import { courseList, getHoles } from "../../scripts/osm";
 
 export default function Login(props) {
-  const { navigation, route } = props;
+  const {  } = props;
   const [buttonTree, setButtonTree] = useState([true, false, false, false]);
-  // const [playerCount, setPlayerCount] = useState(); // temporary for dev
-  // const [players, setPlayers] = useState([]);
-  const [playerCount, setPlayerCount] = useState(1); // temporary for dev
-  const [players, setPlayers] = useState(["Player 1"]) // temporary for dev
+  const [playerCount, setPlayerCount] = useState(1);//() disabled temporary for dev
+  const [players, setPlayers] = useState(["Stephen Cardie"]); //([]) disabled temporarily for dev
   const [pickedCourse, setPickedCourse] = useState([]);
   const [courses, setCourses] = useState([]);
   const [courseLoading, setCourseLoading] = useState(true);
@@ -33,22 +32,7 @@ export default function Login(props) {
     setCourseLoading(true);
   }
 
-  async function courseList() {
-    const coursesFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: "[out:json][timeout:25];way(around:10000,43.6886058, -79.3004177)[\"leisure\"=\"golf_course\"];out tags;"
-    })
-      .then(response => response.json())
-      .then(data => { console.log("Fetched data success: ", data); setCourses(data); setCourseLoading(false) })
-      .catch(error => console.error("Sorry, no working.", error));
-    ;
-
-  }
-  useEffect(() => { courseList() }, []);
+  useEffect(() => { courseList(courses, setCourses, courseLoading, setCourseLoading) }, []);
 
   return (
     <View>
@@ -89,8 +73,6 @@ export default function Login(props) {
             pickedCourse={pickedCourse}
             playerCount={playerCount}
             players={players}
-          //  holes={holes}
-          //  setHoles={setHoles}
           />
         ) : (
           <></>
@@ -112,21 +94,8 @@ function GameReview(props) {
   const [course, setCourse] = useState([])
   const [holesLoading, setHolesLoading] = useState(true)
   let holes = [];
-  async function getHoles() {
-    await fetch('https://www.overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: "[out:json][timeout:25];way(" + pickedCourse.id + ");map_to_area ->.golfcourse;way[\"golf\"=\"hole\"](area.golfcourse)->.holes;.golfcourse out center;.holes out tags;"
-    })
-      .then(response => response.json())
-      .then(data => { console.log("The data", data); setCourse(data); setHolesLoading(false) })
-      .catch(error => console.error("Sorry, no working.", error));
-    ;
-  }
-  useEffect(() => { getHoles() }, []);
+
+  useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []);
   console.log("Holes Loading: ", holesLoading)
   if (!holesLoading) {
     // console.log("Let's go!", course)

@@ -7,7 +7,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { styles } from "./login";
+import { styles } from "../login";
 
 
 export function PlayerSelect(props) {

@@ -8,6 +8,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import { updateScores } from "./score";
 
 export default function Score(props) {
   const { navigation, route } = props;
@@ -17,32 +18,6 @@ export default function Score(props) {
   const [players, setPlayers] = useState(route.params.players)
   const [tempScore, setTempScore] = useState();
 
-  function updateScores() {
-    const playerScore = player.scores.map((score, i) => {
-      if (i === key) {
-        return(tempScore)
-      }
-        
-      return(score)
-    })
-    const playerList = players.map((playName) => {
-      if(playName.player == player.player) {
-        return({
-          player: player.player,
-          scores: playerScore}
-        )
-      } else {
-        return({
-          player: playName.player,
-          scores: playName.scores}
-        )
-      }
-    })
-
-    navigation.navigate("Scoreboard", {
-      players: playerList,
-      });
-  }
   return (
     <View>
       <Text>

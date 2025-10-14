@@ -1,6 +1,5 @@
 import { React, StrictMode } from "react";
-import Score from "./components/score.jsx";
-import Scoreboard from "./components/scoreboard.jsx";
+import { Login, Score, Scoreboard }  from "./components/index.js";
 import {
   StyleSheet,
 } from "react-native";
@@ -8,7 +7,8 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./components/login.jsx";
+
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {

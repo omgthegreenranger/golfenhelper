@@ -9,14 +9,15 @@ import {
   useWindowDimensions,
   Button,
 } from "react-native";
+import { changeScreen } from "../../scripts/navigation";
 
 export default function Scoreboard(props) {
-  const { scoreCard, navigation, route, holes } = props;
+  const { navigation, route, holes } = props;
   // const [holes, setHoles] = useState(route.params.holes);
   const scorecard = route.params.scoreCard
   const players = scorecard.players;
   const [progress, setProgress] = useState(0);
-
+  console.log(players)
   console.log(holes);
   const progressHole = () => {
     for(let player of players){
@@ -32,14 +33,14 @@ export default function Scoreboard(props) {
     return (false)
   }
 
-  function changeScreen(hole, index, player) {
-    navigation.navigate("Score", {
-      hole: hole,
-      key: index,
-      player: player,
-      players: players,
-    });
-  }
+  // function changeScreen(hole, index, player) {
+  //   navigation.navigate("Score", {
+  //     hole: hole,
+  //     key: index,
+  //     player: player,
+  //     players: players,
+  //   });
+  // }
   let holesOut = scorecard.holes.slice(0, 9);
   let holesIn = scorecard.holes.slice(9, 18);
 
@@ -83,7 +84,7 @@ export default function Scoreboard(props) {
                     <TouchableOpacity
                       style={styles.button}
                       key={j}
-                      onPress={() => changeScreen(deet, i, golfer)}
+                      onPress={() => changeScreen(deet, i, golfer, players)}
                     >
                       <Text style={styles.scoreFont}>{golfer.scores[i]}</Text>
                     </TouchableOpacity>
