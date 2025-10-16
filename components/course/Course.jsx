@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,13 +10,16 @@ import {
 } from "react-native";
 import { styles } from "../login/Login";
 import { LoadingPulse } from "../../scripts/animations";
-
+import { courseList } from "../../scripts/osm";
+import { SetupContext } from "../../App";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CourseSelect(props) {
-  const { setButtonTree, buttonTree, setPickedCourse, courses, setCourses, courseLoading } = props;
-  const elements = courses.elements;
-  console.log(courseLoading)
-  
+  const { courseLoading, setCourseLoading } = useContext(SetupContext);
+  const [courses, setCourses] = useState([]);
+  const navigation = useNavigation();
+  useEffect(() => { courseList(setCourses, setCourseLoading) }, []);
+  const elements = courses.elements
   return (
     <View>
       <View>
@@ -30,9 +33,10 @@ export default function CourseSelect(props) {
               title={course.tags.name}
               style={styles.button}
               onPress={() => {
-                setPickedCourse(course);
-                // setButtonTree([false, true, false, false]); ### DISABLING FOR DEVELOPMENT
-                setButtonTree([false, false, false, true]);
+                let pickedCourse = course;
+                navigation.navigate("confirm", {
+                  pickedCourse: pickedCourse
+                })
               }}
             ></Button>
             <View

@@ -1,9 +1,8 @@
-export function updateScores() {
+export function updateScores( player, players, key, tempScore) {
     const playerScore = player.scores.map((score, i) => {
       if (i === key) {
         return(tempScore)
-      }
-        
+      }        
       return(score)
     })
     const playerList = players.map((playName) => {
@@ -19,7 +18,5 @@ export function updateScores() {
         )
       }
     })
-        navigation.navigate("Scoreboard", {
-      players: playerList,
-      });
+    return playerList
     }

@@ -7,17 +7,15 @@ import {
   Pressable,
   useWindowDimensions,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { updateScores } from "./score";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Score(props) {
-  const { navigation, route } = props;
-  const [key, setKey] = useState(route.params.key);
-  const [hole, setHole] = useState(route.params.hole);
-  const [player, setPlayer] = useState(route.params.player);
-  const [players, setPlayers] = useState(route.params.players)
+  const { route } = props;
+  const { key, hole, player, players } = route.params
   const [tempScore, setTempScore] = useState();
-
+  const navigation = useNavigation();
   return (
     <View>
       <Text>
@@ -28,15 +26,23 @@ export default function Score(props) {
           style={styles.holeBox}
           keyboardType="number-pad"
           onChangeText={(scoreNum) => {
-            setTempScore(Number(scoreNum))}
+            setTempScore(Number(scoreNum))
           }
-          // defaultValue={player.hole[key].score}
+          }
           clearTextOnFocus="true"
         ></TextInput>
       </View>
       <Pressable
         style={[styles.button, styles.buttonClose]}
-        onPress={() => updateScores()}
+        onPress={() => {
+          let scores = updateScores(player, players, key, tempScore);
+          navigation.popTo('scoreboard', {
+
+          // navigation.setParams({
+            players: scores
+        })
+        // navigation.goBack();
+      }}
       >
         <Text style={styles.textStyle}>Submit score</Text>
       </Pressable>

@@ -10,7 +10,7 @@ import {
 import { styles } from "../login";
 
 
-export function PlayerSelect(props) {
+export default function PlayerSelect(props) {
   const { setButtonTree, buttonTree, setPlayerCount } = props;
   return (
     <View style={{ alignSelf: "center" }}>
@@ -57,7 +57,6 @@ export function PlayerNames(props) {
   const {
     setButtonTree,
     buttonTree,
-    navigation,
     playerCount,
     players,
     setPlayers,

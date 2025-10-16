@@ -1,8 +1,9 @@
-import Course from './course'
+import CourseSelect from './course'
 import Login from './login'
 import Players from './players';
+// import PlayerNames from './players';
 import End from './end';
 import Score from './score';
-import Scoreboard from './scoreboard';
+import ActiveGame from './scoreboard';
 
-export {Course, Login, Players, End, Score, Scoreboard}
+export {CourseSelect, Login, Players, End, Score, ActiveGame}

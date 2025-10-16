@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-color-literals */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,107 +11,58 @@ import {
   Animated
 } from "react-native";
 // import courses from "../course.json";
-import CourseSelect from "../course/Course";
-import { PlayerSelect, PlayerNames } from "../players/Players";
-import { courseList, getHoles } from "../../scripts/osm";
+// import CourseSelect from "../course/Course";
+// import { PlayerSelect, PlayerNames } from "../players/Players";
+import {CourseSelect, Players} from "../index"
+import { getHoles } from "../../scripts/osm";
+import { useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SetupContext } from "../../App";
 
+const Stack = createNativeStackNavigator();
 export default function Login(props) {
-  const {  } = props;
-  const [buttonTree, setButtonTree] = useState([true, false, false, false]);
-  const [playerCount, setPlayerCount] = useState(1);//() disabled temporary for dev
-  const [players, setPlayers] = useState(["Stephen Cardie"]); //([]) disabled temporarily for dev
+  const { route } = props;
   const [pickedCourse, setPickedCourse] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [courseLoading, setCourseLoading] = useState(true);
   const [holeDetails, setHoleDetails] = useState([]);
-  const [holeLoading, setHoleLoading] = useState(true);
-
-  function resetButtons() {
-    setButtonTree([true, false, false, false]);
-    setPickedCourse();
-    setCourseLoading(true);
-  }
-
-  useEffect(() => { courseList(courses, setCourses, courseLoading, setCourseLoading) }, []);
+  // const [scoreCard, setScoreCard] = useState([]);
 
   return (
-    <View>
-      <View>
-        {buttonTree[0] ? (
-          <CourseSelect
-            setButtonTree={setButtonTree}
-            navigation={navigation}
-            setPickedCourse={setPickedCourse}
-            courses={courses}
-            setCourses={setCourses}
-            courseLoading={courseLoading}
-          />
-        ) : (
-          <></>
-        )}
-        {buttonTree[1] ? (
-          <PlayerSelect
-            setButtonTree={setButtonTree}
-            setPlayerCount={setPlayerCount}
-          />
-        ) : (
-          <></>
-        )}
-        {buttonTree[2] ? (
-          <PlayerNames
-            setButtonTree={setButtonTree}
-            playerCount={playerCount}
-            setPlayers={setPlayers}
-            players={players}
-          />
-        ) : (
-          <></>
-        )}
-        {buttonTree[3] ? (
-          <GameReview
-            navigation={navigation}
-            pickedCourse={pickedCourse}
-            playerCount={playerCount}
-            players={players}
-          />
-        ) : (
-          <></>
-        )}
-      </View>
-      <Button
-        style={[styles.button, styles.goButton]}
-        title="Reset"
-        onPress={() => {
-          resetButtons();
-        }}
-      ></Button>
-    </View>
-  );
+    // <SetupContextProvider>
+    <Stack.Navigator initialRouteName="select" >
+      <Stack.Screen
+        name="select"
+        component={CourseSelect}
+      />
+      <Stack.Screen
+        name="players"
+        component={Players}
+      />
+      <Stack.Screen
+        name="confirm"
+        component={GameReview} />
+    </Stack.Navigator>
+    // </SetupContextProvider>
+  )
 }
 
-function GameReview(props) {
-  const { pickedCourse, playerCount, players, navigation, courses} = props;
+function GameReview({ route }) {
+  const navigation = useNavigation();
+  const { holesLoading, setHolesLoading, players, playerCount } = useContext(SetupContext)
   const [course, setCourse] = useState([])
-  const [holesLoading, setHolesLoading] = useState(true)
-  let holes = [];
-
+  const pickedCourse = route.params.pickedCourse;
   useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []);
-  console.log("Holes Loading: ", holesLoading)
+  let holes = [];
   if (!holesLoading) {
-    // console.log("Let's go!", course)
     let i = 0
     course.elements.map((hole) => {
       if (hole.tags.golf === "hole") {
-        console.log("hole info", i, hole.tags)
         holes[i] = { "hole": hole.tags.ref, "par": hole.tags.par };
         i++
       }
     })
   }
-  holesLoading ? console.log("Still going") : console.log("Done!", holes)
-
-
-
+  holesLoading ? console.log("Loading Holes") : console.log("Holes loaded", holes)
 
   let holeCount = holes.length;
 
@@ -132,35 +83,36 @@ function GameReview(props) {
       par: hole.par,
     };
   });
-  const scoreCard = {
-    course: courseInfo,
-    holes: holeInfo,
-    players: playerInfo,
-  };
-  console.log(scoreCard)
+  console.log("Params for scoreboard", "\n", "Course:", courseInfo, "\n", "Holes:", holeInfo, "\n", "Players:", playerInfo)
   return (
     <View style={styles.recapBlock}>
       <Text>Round details recap</Text>
       <View style={styles.recapCourseBlock}>
-        <Text>{scoreCard.course.name}</Text>
-        <Text>{scoreCard.course.address}</Text>
+        <Text>{courseInfo.name}</Text>
+        <Text>{courseInfo.address}</Text>
       </View>
       <View style={styles.recapPlayersBlock}>
-        {scoreCard.players.map((golfer, i) => {
+        {playerInfo.map((golfer, i) => {
           return <Text key={i}>{golfer.player}</Text>;
         })}
       </View>
       <Pressable
         style={[styles.button, styles.goButton]}
-        onPress={() =>
-          navigation.navigate("Scoreboard", {
-            scoreCard: scoreCard,
-            // course: courseInfo,
-            // players: playerInfo,
-            // holes: holeInfo,
-            holes: holes,
-          //  setHoles: setHoles
-          })
+        onPress={() => {
+          navigation.navigate("ActiveGame",
+            {
+              screen: 'scoreboard',
+              params: {
+                // scoreCard: card
+              course: courseInfo,
+              players: playerInfo,
+              holes: holeInfo,
+              // holes: holes,
+              //  setHoles: setHoles
+            }
+          }
+          )
+        }
         }
       >
         <Text>Start Game</Text>
