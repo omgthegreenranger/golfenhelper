@@ -33,9 +33,8 @@ export default function CourseSelect(props) {
               title={course.tags.name}
               style={styles.button}
               onPress={() => {
-                let pickedCourse = course;
                 navigation.navigate("confirm", {
-                  pickedCourse: pickedCourse
+                  pickedCourse: course
                 })
               }}
             ></Button>

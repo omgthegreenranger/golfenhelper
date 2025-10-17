@@ -11,11 +11,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { updateScores } from "./score";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Score(props) {
-  const { route } = props;
-  const { key, hole, player, players } = route.params
+export default function Score({course, holeInfo, setHoleInfo, gamePlay, setGamePlay}) {
+  // const { route } = props;
+  // const { key, hole, player, players } = route.params
+  const {hole, key, player, players} = holeInfo[0];
   const [tempScore, setTempScore] = useState();
   const navigation = useNavigation();
+
+
+
   return (
     <View>
       <Text>

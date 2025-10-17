@@ -28,6 +28,7 @@ const SetupContextProvider = ({ children }) => {
     </SetupContext.Provider>
   )
 }
+
 export default function App() {
   const SetupContext = createContext(null);
   return (
