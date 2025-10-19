@@ -10,26 +10,17 @@ import {
   Pressable,
   Animated
 } from "react-native";
-// import courses from "../course.json";
-// import CourseSelect from "../course/Course";
-// import { PlayerSelect, PlayerNames } from "../players/Players";
-import {CourseSelect, Players} from "../index"
-import { getHoles } from "../../scripts/osm";
+import {CourseSelect, Players, Confirm} from "../index"
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SetupContext } from "../../App";
 
-const Stack = createNativeStackNavigator();
-export default function Login(props) {
-  const { route } = props;
-  const [pickedCourse, setPickedCourse] = useState([]);
-  const [courses, setCourses] = useState([]);
-  const [holeDetails, setHoleDetails] = useState([]);
-  // const [scoreCard, setScoreCard] = useState([]);
+const Stack = createNativeStackNavigator(); // navigator for the game setup process
+export default function Login({route}) {
 
   return (
     // <SetupContextProvider>
-    <Stack.Navigator initialRouteName="select" >
+    <Stack.Navigator initialRouteName="select" > 
       <Stack.Screen
         name="select"
         component={CourseSelect}
@@ -40,85 +31,10 @@ export default function Login(props) {
       />
       <Stack.Screen
         name="confirm"
-        component={GameReview} />
+        component={Confirm} />
     </Stack.Navigator>
     // </SetupContextProvider>
   )
-}
-
-function GameReview({ route }) {
-  const navigation = useNavigation();
-  const { holesLoading, setHolesLoading, players, playerCount } = useContext(SetupContext)
-  const [course, setCourse] = useState([])
-  const pickedCourse = route.params.pickedCourse;
-  useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []);
-  let holes = [];
-  if (!holesLoading) {
-    let i = 0
-    course.elements.map((hole) => {
-      if (hole.tags.golf === "hole") {
-        holes[i] = { "hole": hole.tags.ref, "par": hole.tags.par };
-        i++
-      }
-    })
-  }
-  holesLoading ? console.log("Loading Holes") : console.log("Holes loaded", holes)
-
-  let holeCount = holes.length;
-
-  let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
-
-  const courseInfo = { name: pickedCourse.tags.name, address: pickedCourse.address };
-  const playerInfo = players.map((player, i) => {
-    return {
-      player: player,
-      scores: holeValue,
-    };
-  });
-  const holeInfo = holes.map((hole) => {
-    return {
-      ...hole,
-      hole: parseInt(hole.hole),
-      distance: hole.distance,
-      par: hole.par,
-    };
-  });
-  console.log("Params for scoreboard", "\n", "Course:", courseInfo, "\n", "Holes:", holeInfo, "\n", "Players:", playerInfo)
-  return (
-    <View style={styles.recapBlock}>
-      <Text>Round details recap</Text>
-      <View style={styles.recapCourseBlock}>
-        <Text>{courseInfo.name}</Text>
-        <Text>{courseInfo.address}</Text>
-      </View>
-      <View style={styles.recapPlayersBlock}>
-        {playerInfo.map((golfer, i) => {
-          return <Text key={i}>{golfer.player}</Text>;
-        })}
-      </View>
-      <Pressable
-        style={[styles.button, styles.goButton]}
-        onPress={() => {
-          navigation.navigate("ActiveGame",
-            {
-              screen: 'scoreboard',
-              params: {
-                // scoreCard: card
-              course: courseInfo,
-              players: playerInfo,
-              holes: holeInfo,
-              // holes: holes,
-              //  setHoles: setHoles
-            }
-          }
-          )
-        }
-        }
-      >
-        <Text>Start Game</Text>
-      </Pressable>
-    </View>
-  );
 }
 
 export const styles = StyleSheet.create({

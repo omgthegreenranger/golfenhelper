@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-color-literals */
-import React, { use, useState, useContext } from "react";
+import React, { useRef, useState, useContext } from "react";
 import Score from "../score/Score";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -18,40 +18,20 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Game = createNativeStackNavigator();
 
-export default function ActiveGame({ route }) {
-  // const [scoreCard, setScoreCard] = useState(route.params.scoreCard)
-  return (
-    <Game.Navigator>
-      <Game.Screen
-        name="scoreboard" component={Scoreboard} />
-      <Game.Screen name="Score" component={Score} screenOptions={{ presentation: 'modal' }} />
-    </Game.Navigator>
-  );
-}
-
-function Scoreboard({ route }) {
+export default function Scoreboard(props) {
+  const {course, holes, setHoles, holeInfo, setHoleInfo, gamePlay, setGamePlay } = props;
+  console.log(props);
   const { holesLoading } = useContext(SetupContext);
   const navigation = useNavigation();
-  const course = route.params.course;
-  const [holes, setHoles] = useState(route.params.holes);
-  const [players, setPlayers] = useState([]);
-  const [progress, setProgress] = useState(0);
-  setPlayers(route.params.players);
-  console.log("Params", route.params)
-  console.log("Players:", players);
+  console.log("Players:", gamePlay);
   console.log("Holes:", holes);
+  const [progress, setProgress] = useState(0);
   const [progression, setProgression] = useState(false)
-  function changeScreen(hole, index, player, players) {
-    navigation.navigate("Score", {
-      hole: hole,
-      key: index,
-      player: player,
-      players: players,
-    });
-  }
+  // const holeRef = useRef(null)
+
   let holesOut = holes.slice(0, 9);
   let holesIn = holes.slice(9, 18);
-
+  console.log(gamePlay)
   return (
     <>
       <View>
@@ -67,7 +47,7 @@ function Scoreboard({ route }) {
                 <View>
                   <Text style={styles.sideHoleFont}>Hole</Text>
                   <Text style={styles.sideParFont}>Par</Text>
-                  {players.map((golfer, i) => {
+                  {gamePlay.map((golfer, i) => {
                     let initials = golfer.player.match(/(\b\S)?/g).join("").toUpperCase()
                     return (
                       <Text style={styles.sideNameFont} key={i}>
@@ -87,14 +67,19 @@ function Scoreboard({ route }) {
                     <View style={[styles.scorebox, scorestyle]} key={i}>
                       <Text style={styles.holeFont}>{deet.hole}</Text>
                       <Text style={styles.parFont}>{deet.par}</Text>
-                      {players.map((golfer, j) => {
+                      {gamePlay.map((golfer, j) => {
                         return (
                           <TouchableOpacity
                             style={styles.button}
                             key={j}
-                            onPress={() => changeScreen(deet, i, golfer, players)}
+                            onPress={() => {
+                              setHoleInfo({"hole": deet, "key": i, "player": golfer, "players": gamePlay}); holeRef.current?.focus();}}
+                              // changeScreen(deet, i, golfer, gamePlay)}
                           >
-                            <Text style={styles.scoreFont}>{golfer.scores[i]}</Text>
+                            <Text style={styles.scoreFont}>
+                              {golfer.scores[i]}</Text>
+                              {/* {holeRef}</Text> */}
+                              {/* </Text> */}
                           </TouchableOpacity>
                         );
                       })}
@@ -108,7 +93,7 @@ function Scoreboard({ route }) {
                 <View>
                   <Text style={styles.sideHoleFont}>Hole</Text>
                   <Text style={styles.sideParFont}>Par</Text>
-                  {players.map((golfer, i) => {
+                  {gamePlay.map((golfer, i) => {
                     let initials = golfer.player.match(/(\b\S)?/g).join("").toUpperCase()
                     return (
                       <Text style={styles.sideNameFont} key={i}>
@@ -128,11 +113,13 @@ function Scoreboard({ route }) {
                     <View style={[styles.scorebox, scorestyle]} key={i + 9}>
                       <Text style={styles.holeFont}>{deet.hole}</Text>
                       <Text style={styles.parFont}>{deet.par}</Text>
-                      {players.map((golfer, j) => {
+                      {gamePlay.map((golfer, j) => {
                         return (
                           <TouchableOpacity
                             key={j}
-                            onPress={() => changeScreen(deet, i + 9, golfer, players)}
+                            onPress={() => 
+                                    setHoleInfo({"hole": deet, "key": i+9, "player": golfer, "players": gamePlay})}
+                              // changeScreen(deet, i + 9, golfer, players)}
                           >
                             <Text style={styles.scoreFont}>
                               {golfer.scores[i + 9]}
