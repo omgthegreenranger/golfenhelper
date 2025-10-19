@@ -15,15 +15,17 @@ import { getHoles } from "../../scripts/osm";
 import { useNavigation } from "@react-navigation/native";
 import { SetupContext } from "../../App";
 
-export default function Confirm(props) {
-  const {route} = props
-  const navigation = useNavigation();
-  const { holesLoading, setHolesLoading, players, setPlayers, playerCount, setPlayerCount } = useContext(SetupContext)
-  const [course, setCourse] = useState([])
-  const pickedCourse = route.params.pickedCourse;
-  useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []);
+export default function Confirm({route}) {
+  const { pickedCourse } = route.params;
+  const navigation = useNavigation(); // for screen navigation
+  const { holesLoading, setHolesLoading, players } = useContext(SetupContext) // take from context
+  const [course, setCourse] = useState([]) // set Course state to retain course data from the OSM call
+
+  useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []); // api call to get the game data from OSM and provide in Course state
+
   let holes = [];
-  if (!holesLoading) { 
+  
+  if (!holesLoading) {
     let i = 0
     course.elements.map((hole) => {
       if (hole.tags.golf === "hole") {
@@ -54,6 +56,11 @@ export default function Confirm(props) {
   console.log("Params for scoreboard", "\n", "Course:", courseInfo, "\n", "Holes:", holeInfo, "\n", "Players:", playerInfo)
   return (
     <View style={styles.recapBlock}>
+            {holesLoading ? 
+           ( <Text>Loading Data...</Text> )
+      :
+      (
+        <View>
       <Text>Round details recap</Text>
       <View style={styles.recapCourseBlock}>
         <Text>{courseInfo.name}</Text>
@@ -83,6 +90,8 @@ export default function Confirm(props) {
       >
         <Text>Start Game</Text>
       </Pressable>
+      </View>
+      )}
     </View>
   );
 }

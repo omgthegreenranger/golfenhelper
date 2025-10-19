@@ -4,7 +4,8 @@ import Players from './players';
 // import PlayerNames from './players';
 import End from './end';
 import Score from './score';
-import ActiveGame from './scoreboard';
+import Scoreboard from './scoreboard';
 import Confirm from './confirm';
+import ActiveGame from './activegame';
 
-export {CourseSelect, Login, Players, End, Score, ActiveGame, Confirm}
+export {CourseSelect, Login, Players, End, Score, Scoreboard, ActiveGame, Confirm}

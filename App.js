@@ -1,5 +1,5 @@
 import { React, StrictMode, useContext, createContext, useState } from "react";
-import { Login, ActiveGame} from "./components/index.js";
+import { Login, ActiveGame } from "./components/index.js";
 import {
   StyleSheet,
 } from "react-native";
@@ -14,16 +14,18 @@ import { Provider } from 'react-redux'
 
 // const container = document.getElementById('root')
 
+// Context provider for default data - dev and otherwise 
+
 const Stack = createNativeStackNavigator();
 export const SetupContext = createContext();
 const SetupContextProvider = ({ children }) => {
-  const [courseLoading, setCourseLoading] = useState(true);
-  const [holesLoading, setHolesLoading] = useState(true);
-  const [playerCount, setPlayerCount] = useState(2);//() disabled temporary for dev
-  const [players, setPlayers] = useState(["Stephen Cardie", "Edith Cooper\-Cardie"]); //([]) disabled temporarily for dev
+  const [courseLoading, setCourseLoading] = useState(true); // loading toggle for course API call
+  const [holesLoading, setHolesLoading] = useState(true); // loading toggle for hole data API call
+  const [playerCount, setPlayerCount] = useState(2);// hardcoded for dev - revert to () on production (or set further down tree)
+  const [players, setPlayers] = useState(["Stephen Cardie", "Edith Cooper\-Cardie"]); // hardcoded for dev - revert to ([]) on production (or set further down tree)
 
   return (
-    <SetupContext.Provider value={{ courseLoading, setCourseLoading, holesLoading, setHolesLoading, playerCount, setPlayerCount, players, setPlayers}}>
+    <SetupContext.Provider value={{ courseLoading, setCourseLoading, holesLoading, setHolesLoading, playerCount, setPlayerCount, players, setPlayers }}>
       {children}
     </SetupContext.Provider>
   )
@@ -31,13 +33,13 @@ const SetupContextProvider = ({ children }) => {
 
 export default function App() {
   const SetupContext = createContext(null);
+
   return (
     // <StrictMode>
     <SetupContextProvider>
       <NavigationContainer
         style={styles.container}
       >
-
         <Stack.Navigator initialRouteName="Login"
           style={styles.container}
           screenOptions={{

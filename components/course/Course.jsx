@@ -25,7 +25,7 @@ export default function CourseSelect(props) {
       <View>
         <Text>Please choose a course:</Text>
       </View>
-      {courseLoading ? <View><LoadingPulse>Loading Text</LoadingPulse></View> : elements.map((course, i) => {
+      {courseLoading ? <View><Text>Loading Text</Text></View> : elements.map((course, i) => {
         return (
           <View style={styles.course} key={i}>
             <Button

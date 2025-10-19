@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-color-literals */
-import React, { use, useState, useContext } from "react";
+import React, { useRef, useState, useContext } from "react";
 import Score from "../score/Score";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -18,33 +18,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Game = createNativeStackNavigator();
 
-export default function ActiveGame({ route }) {
-  const { holesLoading} = useContext(SetupContext);
-  // const players = route.params.playerNames
-  const course = route.params.course;
-  const [gamePlay, setGamePlay] = useState(route.params.players);
-  const [holes, setHoles] = useState(route.params.holes);
-  console.log("Game level - players", gamePlay)
-  const [holeInfo, setHoleInfo] = useState([{"hole": 1, "key": 0, "player": gamePlay[0].player, "players": gamePlay}])
-  console.log("Game level - players", gamePlay)
-  console.log("Game level - hole", holeInfo)
-  console.log("Game level - holes loading", holesLoading)
-
-  
-  // const [players, setPlayers] = useState([]);
-  return (
-    <View>
-      <View>
-        <Score course={course} holeInfo={holeInfo} setHoleInfo={setHoleInfo} gamePlay={gamePlay} setGamePlay={setGamePlay}/>
-      </View>
-      <View>
-        <Scoreboard course={course} holes={holes} holeInfo={holeInfo} setHoles={setHoles} setHoleInfo={setHoleInfo} gamePlay={gamePlay} setGamePlay={setGamePlay} />
-      </View>
-    </View>
-  );
-}
-
-function Scoreboard(props) {
+export default function Scoreboard(props) {
   const {course, holes, setHoles, holeInfo, setHoleInfo, gamePlay, setGamePlay } = props;
   console.log(props);
   const { holesLoading } = useContext(SetupContext);
@@ -53,6 +27,7 @@ function Scoreboard(props) {
   console.log("Holes:", holes);
   const [progress, setProgress] = useState(0);
   const [progression, setProgression] = useState(false)
+  // const holeRef = useRef(null)
 
   let holesOut = holes.slice(0, 9);
   let holesIn = holes.slice(9, 18);
@@ -97,11 +72,14 @@ function Scoreboard(props) {
                           <TouchableOpacity
                             style={styles.button}
                             key={j}
-                            onPress={() => 
-                              setHoleInfo([{"hole": deet, "key": i, "player": golfer, "players": gamePlay}])}
+                            onPress={() => {
+                              setHoleInfo({"hole": deet, "key": i, "player": golfer, "players": gamePlay}); holeRef.current?.focus();}}
                               // changeScreen(deet, i, golfer, gamePlay)}
                           >
-                            <Text style={styles.scoreFont}>{golfer.scores[i]}</Text>
+                            <Text style={styles.scoreFont}>
+                              {golfer.scores[i]}</Text>
+                              {/* {holeRef}</Text> */}
+                              {/* </Text> */}
                           </TouchableOpacity>
                         );
                       })}
@@ -140,7 +118,7 @@ function Scoreboard(props) {
                           <TouchableOpacity
                             key={j}
                             onPress={() => 
-                                    setHoleInfo([{"hole": deet, "key": i+9, "player": golfer, "players": gamePlay}])}
+                                    setHoleInfo({"hole": deet, "key": i+9, "player": golfer, "players": gamePlay})}
                               // changeScreen(deet, i + 9, golfer, players)}
                           >
                             <Text style={styles.scoreFont}>
