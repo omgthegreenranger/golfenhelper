@@ -11,9 +11,13 @@ import React, { useState, useEffect, useContext } from "react";
 import { updateScores } from "./score";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Score({course, holeInfo, setHoleInfo, gamePlay, setGamePlay}) {
-  const {hole, key, player, players} = holeInfo;
-  const [tempScore, setTempScore] = useState();
+
+export default function Score(
+  {course, setCourse, holes, setHoles, gamePlay, setGamePlay, activeHole, setActiveHole, player, setPlayer, setScoreChange}
+  ) {
+  const [tempScore, setTempScore] = useState({"key": 1, "score": 0})
+
+  const hole = holes[activeHole];
   const navigation = useNavigation();
 
 
@@ -21,30 +25,25 @@ export default function Score({course, holeInfo, setHoleInfo, gamePlay, setGameP
   return (
     <View>
       <Text>
-        Hole #{hole.hole}, Distance to Tee: {hole.distance}, Par: {hole.par}
+        Hole #{hole.hole}, Distance to Tee: {hole.distance}, Par: {hole.par}, Player: {gamePlay[player].player}
       </Text>
       <View style={styles.holeScore}>
         <TextInput
           style={styles.holeBox}
           keyboardType="number-pad"
-          onChangeText={(scoreNum) => {
-            setTempScore(Number(scoreNum))
-          }
-          }
           clearTextOnFocus="true"
+          value={tempScore.score}
+          onChangeText = {text => setTempScore({"key": activeHole, "score": Number(text)})}
         ></TextInput>
       </View>
       <Pressable
         style={[styles.button, styles.buttonClose]}
         onPress={() => {
-          let scores = updateScores(player, players, key, tempScore);
-          navigation.popTo('scoreboard', {
-
-          // navigation.setParams({
-            players: scores
-        })
-        // navigation.goBack();
-      }}
+          setGamePlay(updateScores(player, gamePlay, tempScore))
+          setScoreChange(true)
+          console.log(gamePlay);
+          navigation.nav
+        }}
       >
         <Text style={styles.textStyle}>Submit score</Text>
       </Pressable>

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-color-literals */
-import React, { useRef, useState, useContext } from "react";
-import { Scoreboard, Score} from "../index";
+import { React, useRef, useState, useContext, createRef, createContext, useEffect } from "react";
+import { Scoreboard, Score } from "../index";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -14,32 +14,101 @@ import { useNavigation, NavigationContainer } from "@react-navigation/native";
 import { progressHole } from "./activegame";
 import { SetupContext } from "../../App";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { FinishCheck } from "./activegame";
+// import { ScoringContext } from "./activegame";
 
 const Game = createNativeStackNavigator();
 
+export const ScoringContext = createContext();
+const ScoringContextProvider = ({ children }) => {
+  const [course, setCourse] = useState([])
+  const [activeHole, setActiveHole] = useState(0); // set the hole being chosen
+  // const [tempScore, setTempScore] = useState(); // temporary chosen score as State
+  const [player, setPlayer] = useState(0); // player State - set to one player
+  const [gamePlay, setGamePlay] = useState([]); // players list for score
+  const [holes, setHoles] = useState([]); // default holes reference list
+
+  return (
+    <ScoringContext.Provider value={{
+      course: [
+        course,
+        setCourse],
+      holes: [
+        holes,
+        setHoles
+      ],
+      activeHole: [
+        activeHole,
+        setActiveHole
+      ],
+      tempScore: [
+        tempScore,
+        setTempScore
+      ],
+      player: [
+        player,
+        setPlayer
+      ],
+      gamePlay: [
+        gamePlay,
+        setGamePlay
+      ]
+    }}>
+      {children}
+    </ScoringContext.Provider>
+  )
+}
+
 export default function ActiveGame({ route }) {
-  const { holesLoading} = useContext(SetupContext);
-  const course = route.params.course;
+  const { holesLoading } = useContext(SetupContext);
+  console.log(holesLoading)
+  const [course, setCourse] = useState(route.params.course)
+  const [activeHole, setActiveHole] = useState(0); // set the hole being chosen
+  const [tempScore, setTempScore] = useState(); // temporary chosen score as State
+  const [player, setPlayer] = useState(0); // player State - set to one player
   const [gamePlay, setGamePlay] = useState(route.params.players); // players list for score
   const [holes, setHoles] = useState(route.params.holes); // default holes reference list
-  const [holeInfo, setHoleInfo] = useState({"hole": 1, "key": 0, "player": gamePlay.player, "players": gamePlay}) // standard hole info package
+  const [scoreChange, setScoreChange] = useState(false);
 
   // Console this data for our reference
   console.log("Game level - players", gamePlay)
-  console.log("Game level - hole", holeInfo)
   console.log("Game level - holes loading", holesLoading)
+  console.log("Score change", scoreChange)
+  console.log("Player", player)
+  scoreChange ? FinishCheck(gamePlay, player) : ""
 
-  
-  // const [players, setPlayers] = useState([]);
+
   return (
-    <View>
+
       <View>
-        <Score course={course} holeInfo={holeInfo} setHoleInfo={setHoleInfo} gamePlay={gamePlay} setGamePlay={setGamePlay}/>
+        <View>
+          <Score
+          course={course}
+          holes={holes}
+          setHoles={setHoles}
+          gamePlay={gamePlay}
+          setGamePlay={setGamePlay}
+          activeHole={activeHole}
+          setActiveHole={setActiveHole}
+          player={player}
+          setPlayer={setPlayer}
+          setScoreChange = {setScoreChange}
+          />
+        </View>
+        <View>
+          <Scoreboard
+          course={course}
+          holes={holes}
+          setHoles={setHoles}
+          gamePlay={gamePlay}
+          setGamePlay={setGamePlay}
+          activeHole={activeHole}
+          setActiveHole={setActiveHole}
+          setPlayer={setPlayer}
+          scoreChange={scoreChange}
+          />
+        </View>
       </View>
-      <View>
-        <Scoreboard course={course} holes={holes} holeInfo={holeInfo} setHoles={setHoles} setHoleInfo={setHoleInfo} gamePlay={gamePlay} setGamePlay={setGamePlay} />
-      </View>
-    </View>
   );
 }
 

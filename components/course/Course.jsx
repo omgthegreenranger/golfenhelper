@@ -19,13 +19,20 @@ export default function CourseSelect(props) {
   const [courses, setCourses] = useState([]);
   const navigation = useNavigation();
   useEffect(() => { courseList(setCourses, setCourseLoading) }, []);
+    console.log(courses)
   const elements = courses.elements
   return (
     <View>
       <View>
         <Text>Please choose a course:</Text>
       </View>
-      {courseLoading ? <View><Text>Loading Text</Text></View> : elements.map((course, i) => {
+      {courseLoading ? (
+        <View><Text>Loading Text</Text></View>
+      ) :
+      (courseLoading === null) ? (
+        <View><Text>Data fetch failed. Please try again</Text></View>
+      ) :
+      elements.map((course, i) => {
         return (
           <View style={styles.course} key={i}>
             <Button

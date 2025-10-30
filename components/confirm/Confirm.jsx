@@ -15,7 +15,7 @@ import { getHoles } from "../../scripts/osm";
 import { useNavigation } from "@react-navigation/native";
 import { SetupContext } from "../../App";
 
-export default function Confirm({route}) {
+export default function Confirm({ route }) {
   const { pickedCourse } = route.params;
   const navigation = useNavigation(); // for screen navigation
   const { holesLoading, setHolesLoading, players } = useContext(SetupContext) // take from context
@@ -24,7 +24,7 @@ export default function Confirm({route}) {
   useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []); // api call to get the game data from OSM and provide in Course state
 
   let holes = [];
-  
+
   if (!holesLoading) {
     let i = 0
     course.elements.map((hole) => {
@@ -56,42 +56,46 @@ export default function Confirm({route}) {
   console.log("Params for scoreboard", "\n", "Course:", courseInfo, "\n", "Holes:", holeInfo, "\n", "Players:", playerInfo)
   return (
     <View style={styles.recapBlock}>
-            {holesLoading ? 
-           ( <Text>Loading Data...</Text> )
+      {holesLoading 
+      ?
+        (<Text>Loading Data...</Text>)
+      : (holesLoading === null)
+      ?
+        (<Text>Failed, try again</Text>)
       :
-      (
-        <View>
-      <Text>Round details recap</Text>
-      <View style={styles.recapCourseBlock}>
-        <Text>{courseInfo.name}</Text>
-        <Text>{courseInfo.address}</Text>
-      </View>
-      <View style={styles.recapPlayersBlock}>
-        {playerInfo.map((golfer, i) => {
-          return <Text key={i}>{golfer.player}</Text>;
-        })}
-      </View>
-      <Pressable
-        style={[styles.button, styles.goButton]}
-        onPress={() => {
-          navigation.navigate("ActiveGame",
-            {
-              // scoreCard: card
-              course: courseInfo,
-              players: playerInfo,
-              holes: holeInfo,
-              // holes: holes,
-              //  setHoles: setHoles
+        (<View>
+          <Text>Round details recap</Text>
+          <View style={styles.recapCourseBlock}>
+            <Text>{courseInfo.name}</Text>
+            <Text>{courseInfo.address}</Text>
+          </View>
+          <View style={styles.recapPlayersBlock}>
+            {playerInfo.map((golfer, i) => {
+              return <Text key={i}>{golfer.player}</Text>;
+            })}
+          </View>
+          <Pressable
+            style={[styles.button, styles.goButton]}
+            onPress={() => {
+              navigation.navigate("ActiveGame",
+                {
+                  // scoreCard: card
+                  course: courseInfo,
+                  players: playerInfo,
+                  holes: holeInfo,
+                  // holes: holes,
+                  //  setHoles: setHoles
 
+                }
+              )
             }
+            }
+          >
+            <Text>Start Game</Text>
+          </Pressable>
+        </View>
           )
-        }
-        }
-      >
-        <Text>Start Game</Text>
-      </Pressable>
-      </View>
-      )}
+      }
     </View>
   );
 }

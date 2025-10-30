@@ -9,10 +9,9 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createRoot } from "react-dom/client";
 // import { store } from './store/store';
-import { Provider } from 'react-redux'
+// import { Provider } from 'react-redux'
 
 
-// const container = document.getElementById('root')
 
 // Context provider for default data - dev and otherwise 
 
@@ -21,8 +20,8 @@ export const SetupContext = createContext();
 const SetupContextProvider = ({ children }) => {
   const [courseLoading, setCourseLoading] = useState(true); // loading toggle for course API call
   const [holesLoading, setHolesLoading] = useState(true); // loading toggle for hole data API call
-  const [playerCount, setPlayerCount] = useState(2);// hardcoded for dev - revert to () on production (or set further down tree)
-  const [players, setPlayers] = useState(["Stephen Cardie", "Edith Cooper\-Cardie"]); // hardcoded for dev - revert to ([]) on production (or set further down tree)
+  const [playerCount, setPlayerCount] = useState(1);// hardcoded for dev - revert to () on production (or set further down tree)
+  const [players, setPlayers] = useState(["Stephen Cardie"]); // hardcoded for dev - revert to ([]) on production (or set further down tree)
 
   return (
     <SetupContext.Provider value={{ courseLoading, setCourseLoading, holesLoading, setHolesLoading, playerCount, setPlayerCount, players, setPlayers }}>

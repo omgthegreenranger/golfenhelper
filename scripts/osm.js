@@ -9,7 +9,7 @@ export async function courseList(setCourses, setCourseLoading) {
   })
     .then(response => response.json())
     .then(data => { console.log("Fetched courses success: ", setCourses(data)); setCourseLoading(false); return data })
-    .catch(error => console.error("No courses received. See error:", error));
+    .catch(error => {console.error("No courses received. See error:", error); setCourseLoading(null); return error});
   ;
   return
 }
@@ -26,7 +26,7 @@ export async function getHoles(pickedCourse, setHolesLoading, setCourse) {
   })
     .then(response => response.json())
     .then(data => { console.log("Fetching hole data:", data); setCourse(data); setHolesLoading(false); return data })
-    .catch(error => console.error("Getting holes failed. See error:", error));
+    .catch(error => {console.error("Getting holes failed. See error:", error); setHolesLoading(null); return error});
   ;
   return
 }

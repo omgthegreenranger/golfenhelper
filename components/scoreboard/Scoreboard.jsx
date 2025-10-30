@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-color-literals */
-import React, { useRef, useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Score from "../score/Score";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -18,20 +18,17 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Game = createNativeStackNavigator();
 
-export default function Scoreboard(props) {
-  const {course, holes, setHoles, holeInfo, setHoleInfo, gamePlay, setGamePlay } = props;
-  console.log(props);
+export default function Scoreboard({ course, setCourse, holes, setHoles, holeInfo, setHoleInfo, gamePlay, setGamePlay, activeHole, setActiveHole, setPlayer, scoreChange }) {
   const { holesLoading } = useContext(SetupContext);
   const navigation = useNavigation();
   console.log("Players:", gamePlay);
   console.log("Holes:", holes);
   const [progress, setProgress] = useState(0);
   const [progression, setProgression] = useState(false)
-  // const holeRef = useRef(null)
 
   let holesOut = holes.slice(0, 9);
   let holesIn = holes.slice(9, 18);
-  console.log(gamePlay)
+  console.log(scoreChange)
   return (
     <>
       <View>
@@ -40,7 +37,7 @@ export default function Scoreboard(props) {
             <Text>Loading Scores</Text>
           </View> :
           <>
-            <View style={styles.scorecardbox}>
+            <View style={styles.scorecardbox} >
               <View
                 style={styles.scorecard}
               >
@@ -58,7 +55,7 @@ export default function Scoreboard(props) {
                 </View>
                 {holesOut.map((deet, i) => {
                   let scorestyle;
-                  if (progress === i) {
+                  if (activeHole === i) {
                     scorestyle = styles.scoreboxNow;
                   } else {
                     scorestyle = styles.scoreboxThen;
@@ -68,18 +65,18 @@ export default function Scoreboard(props) {
                       <Text style={styles.holeFont}>{deet.hole}</Text>
                       <Text style={styles.parFont}>{deet.par}</Text>
                       {gamePlay.map((golfer, j) => {
+                        // console.log("Golfer", golfer)
                         return (
                           <TouchableOpacity
                             style={styles.button}
                             key={j}
                             onPress={() => {
-                              setHoleInfo({"hole": deet, "key": i, "player": golfer, "players": gamePlay}); holeRef.current?.focus();}}
-                              // changeScreen(deet, i, golfer, gamePlay)}
+                              setActiveHole(i)
+                              setPlayer(j)
+                            }}
                           >
                             <Text style={styles.scoreFont}>
                               {golfer.scores[i]}</Text>
-                              {/* {holeRef}</Text> */}
-                              {/* </Text> */}
                           </TouchableOpacity>
                         );
                       })}
@@ -102,9 +99,10 @@ export default function Scoreboard(props) {
                     );
                   })}
                 </View>
+
                 {holesIn.map((deet, i) => {
                   let scorestyle;
-                  if (progress === i + 9) {
+                  if (activeHole === i + 9) {
                     scorestyle = styles.scoreboxNow;
                   } else {
                     scorestyle = styles.scoreboxThen;
@@ -117,9 +115,10 @@ export default function Scoreboard(props) {
                         return (
                           <TouchableOpacity
                             key={j}
-                            onPress={() => 
-                                    setHoleInfo({"hole": deet, "key": i+9, "player": golfer, "players": gamePlay})}
-                              // changeScreen(deet, i + 9, golfer, players)}
+                            onPress={() => {
+                              setActiveHole(i+9)
+                              setPlayer(j)
+                            }}
                           >
                             <Text style={styles.scoreFont}>
                               {golfer.scores[i + 9]}
