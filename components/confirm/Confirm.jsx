@@ -14,6 +14,7 @@ import { CourseSelect, Players } from "../index"
 import { getHoles } from "../../scripts/osm";
 import { useNavigation } from "@react-navigation/native";
 import { SetupContext } from "../../App";
+import { gamePrepare } from "./confirm";
 
 export default function Confirm({ route }) {
   const { pickedCourse } = route.params;
@@ -21,39 +22,13 @@ export default function Confirm({ route }) {
   const { holesLoading, setHolesLoading, players } = useContext(SetupContext) // take from context
   const [course, setCourse] = useState([]) // set Course state to retain course data from the OSM call
 
-  useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse) }, []); // api call to get the game data from OSM and provide in Course state
+  useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse);}, [])
 
-  let holes = [];
+  const courseData = gamePrepare(course, holesLoading, players)
 
-  if (!holesLoading) {
-    let i = 0
-    course.elements.map((hole) => {
-      if (hole.tags.golf === "hole") {
-        holes[i] = { "hole": hole.tags.ref, "par": hole.tags.par };
-        i++
-      }
-    })
-  }
-  holesLoading ? console.log("Loading Holes") : console.log("Holes loaded", holes)
-
-  let holeCount = holes.length;
-  let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
-  const courseInfo = { name: pickedCourse.tags.name, address: pickedCourse.address };
-  const playerInfo = players.map((player, i) => {
-    return {
-      player: player,
-      scores: holeValue,
-    };
-  });
-  const holeInfo = holes.map((hole) => {
-    return {
-      ...hole,
-      hole: parseInt(hole.hole),
-      distance: hole.distance,
-      par: hole.par,
-    };
-  });
-  console.log("Params for scoreboard", "\n", "Course:", courseInfo, "\n", "Holes:", holeInfo, "\n", "Players:", playerInfo)
+  holesLoading ? console.log("Loading Holes") : console.log("Holes loaded", course.features.hole)
+  
+  console.log("Params for scoreboard", "\n", "Course:", courseData.course, "\n", "Holes:", courseData.hole, "\n", "Players:", courseData.playerInfo)
   return (
     <View style={styles.recapBlock}>
       {holesLoading 
@@ -66,25 +41,23 @@ export default function Confirm({ route }) {
         (<View>
           <Text>Round details recap</Text>
           <View style={styles.recapCourseBlock}>
-            <Text>{courseInfo.name}</Text>
-            <Text>{courseInfo.address}</Text>
+            <Text>{courseData.courseInfo.name}</Text>
+            <Text>{courseData.courseInfo.address}</Text>
           </View>
           <View style={styles.recapPlayersBlock}>
-            {playerInfo.map((golfer, i) => {
+            {courseData.playerInfo.map((golfer, i) => {
               return <Text key={i}>{golfer.player}</Text>;
             })}
           </View>
           <Pressable
             style={[styles.button, styles.goButton]}
             onPress={() => {
+              console.log("Confirm playerInfo", courseData.playerInfo);
               navigation.navigate("ActiveGame",
                 {
-                  // scoreCard: card
-                  course: courseInfo,
-                  players: playerInfo,
-                  holes: holeInfo,
-                  // holes: holes,
-                  //  setHoles: setHoles
+                  course: courseData.courseInfo,
+                  players: courseData.playerInfo,
+                  holes: JSON.stringify(courseData.hole),
 
                 }
               )
