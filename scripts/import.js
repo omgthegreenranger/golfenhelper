@@ -1,7 +1,7 @@
 //temporary import of sample data
 // import json from "../test-data/course-data.json" with { type: 'json' };
 
-export default function NormalizeCourse(json) {
+export function NormalizeCourse(json) {
     const data = json.elements;
 
     // create the base Course data
@@ -61,8 +61,17 @@ export default function NormalizeCourse(json) {
         "course": course,
         "features": features
     }
-    // console.log("Return", JSON.stringify(returnData))
+    console.log("Return", returnData)
     return returnData
 }
 
+// export async function Testjson(testApi) {
+//     if (testApi === 'option1') {
+//         const { default: data } = await import("../test-data/course-data.json", { with: { type: 'json' } });
+//         return data;
+//     } else if (condition === 'option2') {
+//         const { default: data } = await import("../test-data/courses.json", { with: { type: 'json' } });
+//         return data;
+//     }
+// }
 // NormalizeCourse(json)

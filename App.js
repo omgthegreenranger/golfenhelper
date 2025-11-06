@@ -1,7 +1,12 @@
 import { React, StrictMode, useContext, createContext, useState } from "react";
-import { Login, ActiveGame } from "./components/index.js";
+import Login from "./components/login/Login"
+import ActiveGame from "./components/activegame/ActiveGame";
 import {
   StyleSheet,
+  LogBox,
+  Switch,
+  View,
+  Text
 } from "react-native";
 import {
   NavigationContainer,
@@ -10,6 +15,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createRoot } from "react-dom/client";
 // import { store } from './store/store';
 // import { Provider } from 'react-redux'
+LogBox.ignoreLogs(['Require cycle:']); 
 
 
 
@@ -22,9 +28,11 @@ const SetupContextProvider = ({ children }) => {
   const [holesLoading, setHolesLoading] = useState(true); // loading toggle for hole data API call
   const [playerCount, setPlayerCount] = useState(1);// hardcoded for dev - revert to () on production (or set further down tree)
   const [players, setPlayers] = useState(["Stephen Cardie"]); // hardcoded for dev - revert to ([]) on production (or set further down tree)
-
+  const [tempApi, setTempApi] = useState(true);
+  const [searchToggle, setSearchToggle] = useState(false);
+  // const holesJSON = import('./test-data/course-data.json', { with: { type: 'json' } });
   return (
-    <SetupContext.Provider value={{ courseLoading, setCourseLoading, holesLoading, setHolesLoading, playerCount, setPlayerCount, players, setPlayers }}>
+    <SetupContext.Provider value={{ courseLoading, setCourseLoading, holesLoading, setHolesLoading, playerCount, setPlayerCount, players, setPlayers, tempApi, setTempApi, searchToggle, setSearchToggle}}>
       {children}
     </SetupContext.Provider>
   )
@@ -32,7 +40,6 @@ const SetupContextProvider = ({ children }) => {
 
 export default function App() {
   const SetupContext = createContext(null);
-
   return (
     // <StrictMode>
     <SetupContextProvider>
@@ -59,25 +66,11 @@ export default function App() {
         /> */}
         </Stack.Navigator>
       </NavigationContainer>
+
     </SetupContextProvider>
     // </StrictMode>
   );
 }
-
-
-// if (container) {
-//   const root = createRoot(container)
-
-//   root.render(
-//     <Provider store={store}>
-//       <App />
-//     </Provider>,
-//   )
-// } else {
-//   throw new Error(
-//     "Root element with ID 'root' was not found in the document. Ensure there is a corresponding HTML element with the ID 'root' in your HTML file.",
-//   )
-// }
 
 const styles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-color-literals

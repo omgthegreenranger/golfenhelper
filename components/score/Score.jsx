@@ -17,7 +17,7 @@ export default function Score(
   ) {
   const [tempScore, setTempScore] = useState({"key": 1, "score": 0})
 
-  const hole = holes[activeHole];
+  const hole = hole[activeHole];
   const navigation = useNavigation();
 
 

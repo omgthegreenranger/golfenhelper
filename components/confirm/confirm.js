@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export function gamePrepare(course, holesLoading, players) {
     console.log("The Course", course)
-    console.log(holesLoading, players)
+    console.log(holesLoading, players, JSON.stringify(course.features))
     const holes = []
     // if (!holesLoading) {
     //     let i = 0
@@ -17,7 +17,7 @@ export function gamePrepare(course, holesLoading, players) {
     // }
 
     let courseInfo = course.course
-    let holeCount = course.hole;
+    let holeCount = course.features;
     let holeValue = Array.from({ length: holeCount }, (_, index) => 0);
     const playerInfo = players.map((player, i) => {
         return {
@@ -26,7 +26,7 @@ export function gamePrepare(course, holesLoading, players) {
         };
     });
 
-    console.log( "Course", course.course, "players", playerInfo, "holes",)
+    console.log( "Course", course.course, "players", playerInfo, "holes", holes)
     return {courseInfo, holes, playerInfo}
 
 }

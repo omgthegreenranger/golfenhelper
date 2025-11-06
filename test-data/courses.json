@@ -1,0 +1,77 @@
+{
+  "version": 0.6,
+  "generator": "Sample data, locally stored",
+  "osm3s": {
+    "timestamp_osm_base": "2025-11-05T15:18:02Z",
+    "copyright": "Storing this data while doing production to avoid hammering OSM."
+  },
+  "elements": [
+
+{
+  "type": "way",
+  "id": 3979646,
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Rosedale Golf Club",
+    "wikidata": "Q7368171",
+    "wikipedia": "en:Rosedale Golf Club"
+  }
+},
+{
+  "type": "way",
+  "id": 5560720,
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Scarborough Golf & Country Club",
+    "sport": "golf",
+    "wikipedia": "en:Scarboro Golf and Country Club"
+  }
+},
+{
+  "type": "way",
+  "id": 24399315,
+  "tags": {
+    "addr:city": "Scarborough",
+    "addr:housenumber": "781",
+    "addr:street": "Victoria Park Avenue",
+    "leisure": "golf_course",
+    "name": "Dentonia Golf Course"
+  }
+},
+{
+  "type": "way",
+  "id": 24606582,
+  "tags": {
+    "leisure": "golf_course",
+    "name": "Donalda Golf and Country Club"
+  }
+},
+{
+  "type": "way",
+  "id": 32919048,
+  "tags": {
+    "addr:city": "North York",
+    "addr:housenumber": "155",
+    "addr:street": "St Dennis Drive",
+    "leisure": "golf_course",
+    "name": "Flemingdon Park Golf Club",
+    "sport": "golf"
+  }
+},
+{
+  "type": "way",
+  "id": 82574953,
+  "tags": {
+    "addr:city": "Scarborough",
+    "addr:housenumber": "1355",
+    "addr:street": "Kingston Road",
+    "leisure": "golf_course",
+    "name": "The Toronto Hunt Club",
+    "note": "9 hole",
+    "source": "Yahoo;survey",
+    "sport": "golf"
+  }
+}
+
+  ]
+}
