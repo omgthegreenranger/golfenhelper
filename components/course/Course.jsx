@@ -16,48 +16,52 @@ import { useNavigation } from "@react-navigation/native";
 import Settings from "../settings/Settings"
 import coursesJSON from "../../test-data/courses.json" with { type: 'json' }
 
-export function CourseSelect(props) {
-  const { courseLoading, setCourseLoading, tempApi, setTempApi, searchToggle, setSearchToggle } = useContext(SetupContext);
-  const navigation = useNavigation();
-  return (
-    <View>
-      <Settings />
-      <Pressable
-        style={[styles.button, styles.goButton]}
-        onPress={() => {
-     navigation.navigate("start")}}
-      >
-        <Text>Search Courses</Text>
-      </Pressable>
-    </View>
-  );
-}
+// export function CourseSelect({ route }) {
+//   console.log(route)
+//   // const [courseLoading, setCourseLoading] = useState(true)
+//   const navigation = useNavigation();
+//   return (
+//     <View>
+//       <Settings />
+//       <Pressable
+//         style={[styles.button, styles.goButton]}
+//         onPress={() => {
+//           navigation.navigate("start")
+//         }}
+//       >
+//         <Text>Search Courses</Text>
+//       </Pressable>
+//     </View>
+//   );
+// }
 
 
 
 export function CourseDisplay({ route }) {
-  const { courseLoading, setCourseLoading, tempApi, setTempApi, searchToggle, setSearchToggle } = useContext(SetupContext);
-  // const { courses, elements } = route.params
-  console.log(courseLoading)
+  const { tempApi, setTempApi, searchToggle, setSearchToggle } = useContext(SetupContext);
+  const [courseLoading, setCourseLoading] = useState(true)
+  console.log("Loading?", courseLoading)
   console.log(tempApi)
-  const [courseData, setCourseData] = useState([])
+  const [coursesData, setCoursesData] = useState([])
 
   async function getCourses() {
     let courseReturn = []
     if (tempApi) {
+      console.log("Yes")
       courseReturn = coursesJSON;
+      console.log(courseReturn)
       setCourseLoading(false)
     } else {
       console.log("No")
       courseReturn = await courseList(setCourseLoading)
     }
-    setCourseData(courseReturn)
-    console.log("CourseData", courseData);
+    setCoursesData(courseReturn)
+    console.log("CourseData", coursesData);
 
-}
-  useEffect(() => {getCourses()}, [])
+  }
+  useEffect(() => { getCourses() }, [])
 
-  const elements = courseData.elements
+  const elements = coursesData.elements
 
   console.log(elements)
   return (
@@ -78,6 +82,7 @@ export function CourseDisplay({ route }) {
                   navigation.navigate("confirm", {
                     pickedCourse: course
                   })
+                  console.log(courseLoading)
                 }}
               ></Button>
               <View

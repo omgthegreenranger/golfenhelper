@@ -23,7 +23,6 @@ export default function Confirm({ route }) {
 
   useEffect(() => { getHoles(pickedCourse, setHolesLoading, setCourse);}, [])
 console.log(course)
-  // let coursePrepared = []
   var courseData = []
   useEffect(() => {gamePrepare(course, holesLoading, players); courseData = [
     {"course": course.course},
