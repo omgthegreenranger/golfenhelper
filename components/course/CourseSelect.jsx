@@ -10,15 +10,16 @@ import {
 } from "react-native";
 import { styles } from "../login/Login";
 import { useNavigation } from "@react-navigation/native";
-import Settings from "../settings/Settings"
+// import Settings from "../settings/Settings"
+// import { SetupContext } from "../../App";
 
 export function CourseSelect({ route }) {
-  console.log(route)
+  console.log("Route", route)
+  // const { tempApi } = useContext(SetupContext);
   // const [courseLoading, setCourseLoading] = useState(true)
   const navigation = useNavigation();
   return (
     <View>
-      <Settings />
       <Pressable
         style={[styles.button, styles.goButton]}
         onPress={() => {

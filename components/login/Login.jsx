@@ -14,14 +14,15 @@ import {CourseDisplay} from "../course/Course"
 import { CourseSelect } from "../course/CourseSelect"
 import Players from "../players/Players"
 import Confirm from "../confirm/Confirm"
-import { SetupContext } from "../../App";
-import { useNavigation } from "@react-navigation/native";
+import Settings from "../settings/Settings"
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator(); // navigator for the game setup process
+
 export default function Login({ route }) {
   return (
     <View>
+      <Settings />
       <Stack.Navigator initialRouteName="select">
         <Stack.Screen
         name="start"

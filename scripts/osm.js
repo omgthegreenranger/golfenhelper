@@ -1,4 +1,4 @@
-import NormalizeCourse from "./import";
+// import NormalizeCourse from "./import";
 
 export async function courseList(setCourseLoading) {
   const coursesFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
@@ -16,7 +16,7 @@ export async function courseList(setCourseLoading) {
   return coursesFetch
 }
 
-export async function getHoles(pickedCourse, setHolesLoading, setCourse) {
+export async function getHoles(pickedCourse) {
 
   const courseFetch = await fetch('https://www.overpass-api.de/api/interpreter', {
     method: 'POST',
@@ -28,8 +28,8 @@ export async function getHoles(pickedCourse, setHolesLoading, setCourse) {
     body: "[out:json][timeout:25];way(" + pickedCourse.id + ");map_to_area ->.golfcourse;way[leisure=golf_course](area.golfcourse);convert way ::id=id(), type=\"course\", lat=lat(), lon=lon(), name=t[\"name\"], streetnumber=t[\"addr:housenumber\"], streetname=t[\"addr:street\"] -> .courseData;way[golf=hole](area.golfcourse)->.holes;nwr[golf~\"^(fairway|tee|green|pin|water_hazard|bunker|lateral_water_hazard)\"](area.golfcourse)->.restoftheData;.courseData out;.holes out geom;.restoftheData out;"
   })
     .then(response => response.json())
-    .then(data => { setCourse(NormalizeCourse(data)); console.log("Fetched hole data:", data); setHolesLoading(false)})
-    .catch(error => {console.error("Getting holes failed. See error:", error); setHolesLoading(null); return error});
+    .then(data => { console.log("Fetched hole data:", data); return data})
+    .catch(error => {console.error("Getting holes failed. See error:", error); return error});
   ;
   return courseFetch
 }

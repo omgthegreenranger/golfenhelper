@@ -28,14 +28,14 @@ export const SetupContext = createContext();
 
 const SetupContextProvider = ({ children }) => {
   // const [courseLoading, setCourseLoading] = useState(true); // loading toggle for course API call
-  const [holesLoading, setHolesLoading] = useState(true); // loading toggle for hole data API call
-  const [playerCount, setPlayerCount] = useState(1);// hardcoded for dev - revert to () on production (or set further down tree)
-  const [players, setPlayers] = useState(["Stephen Cardie"]); // hardcoded for dev - revert to ([]) on production (or set further down tree)
+  //const [holesLoading, setHolesLoading] = useState(true); // loading toggle for hole data API call
+  // const [playerCount, setPlayerCount] = useState();// hardcoded for dev - revert to () on production (or set further down tree)
+  // const [players, setPlayers] = useState([]); // hardcoded for dev - revert to ([]) on production (or set further down tree)
   const [tempApi, setTempApi] = useState(true);
   const [searchToggle, setSearchToggle] = useState(false);
   // const holesJSON = import('./test-data/course-data.json', { with: { type: 'json' } });
   return (
-    <SetupContext.Provider value={{holesLoading, setHolesLoading, playerCount, setPlayerCount, players, setPlayers, tempApi, setTempApi, searchToggle, setSearchToggle }}>
+    <SetupContext.Provider value={{tempApi, setTempApi, searchToggle, setSearchToggle }}>
       {children}
     </SetupContext.Provider>
   )

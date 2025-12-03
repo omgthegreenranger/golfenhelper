@@ -13,57 +13,33 @@ import { LoadingPulse } from "../../scripts/animations";
 import { courseList } from "../../scripts/osm";
 import { SetupContext } from "../../App";
 import { useNavigation } from "@react-navigation/native";
-import Settings from "../settings/Settings"
 import coursesJSON from "../../test-data/courses.json" with { type: 'json' }
 
-// export function CourseSelect({ route }) {
-//   console.log(route)
-//   // const [courseLoading, setCourseLoading] = useState(true)
-//   const navigation = useNavigation();
-//   return (
-//     <View>
-//       <Settings />
-//       <Pressable
-//         style={[styles.button, styles.goButton]}
-//         onPress={() => {
-//           navigation.navigate("start")
-//         }}
-//       >
-//         <Text>Search Courses</Text>
-//       </Pressable>
-//     </View>
-//   );
-// }
-
-
-
 export function CourseDisplay({ route }) {
-  const { tempApi, setTempApi, searchToggle, setSearchToggle } = useContext(SetupContext);
+  const { tempApi } = useContext(SetupContext);
+  const navigation = useNavigation();
   const [courseLoading, setCourseLoading] = useState(true)
   console.log("Loading?", courseLoading)
-  console.log(tempApi)
+  console.log("What is Temp?", tempApi)
   const [coursesData, setCoursesData] = useState([])
 
   async function getCourses() {
     let courseReturn = []
     if (tempApi) {
-      console.log("Yes")
       courseReturn = coursesJSON;
-      console.log(courseReturn)
+      console.log("Course Return Data", courseReturn)
       setCourseLoading(false)
     } else {
       console.log("No")
       courseReturn = await courseList(setCourseLoading)
     }
     setCoursesData(courseReturn)
-    console.log("CourseData", coursesData);
 
   }
   useEffect(() => { getCourses() }, [])
 
   const elements = coursesData.elements
 
-  console.log(elements)
   return (
     courseLoading ? (
       <View><Text>Loading Text</Text></View>
@@ -79,10 +55,10 @@ export function CourseDisplay({ route }) {
                 title={course.tags.name}
                 style={styles.button}
                 onPress={() => {
-                  navigation.navigate("confirm", {
+                  navigation.navigate("players", {
                     pickedCourse: course
                   })
-                  console.log(courseLoading)
+                  console.log("**********************", courseLoading)
                 }}
               ></Button>
               <View

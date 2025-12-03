@@ -2,8 +2,9 @@
 // import json from "../test-data/course-data.json" with { type: 'json' };
 
 export function NormalizeCourse(json) {
+    console.log(json)
     const data = json.elements;
-
+    console.log(data)
     // create the base Course data
     let course = []
 
